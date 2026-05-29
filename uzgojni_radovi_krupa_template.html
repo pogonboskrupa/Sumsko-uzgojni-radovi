@@ -125,6 +125,15 @@
   .new-input:focus { outline: none; border-color: #c0350a; background: #fff; }
   .new-input.ha { background: #fff8f5; }
 
+  .new-val {
+    display: block; text-align: right; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: #8b4500; font-weight: 600; min-height: 16px;
+  }
+  .new-val.empty { color: var(--gray2); }
+
+  .nova-tab-btn { background: #fff3e0; color: #c05621; border: 1.5px dashed #f4a261; }
+  .nova-tab-btn.active { background: #f4a261; color: white; border-style: solid; }
+
   /* Done row */
   tr.done-row td { background: #eafaf1 !important; color: #27ae60; }
 
@@ -382,6 +391,7 @@
   <button class="tab-btn" onclick="switchTab('priprema','this')">I – Priprema Terena</button>
   <button class="tab-btn" onclick="switchTab('posumljavanje','this')">II – Pošumljavanje</button>
   <button class="tab-btn" onclick="switchTab('njege','this')">III – Njege</button>
+  <button class="tab-btn nova-tab-btn" onclick="switchTab('novagod','this')">📝 Nova Godina</button>
 </div>
 
 <!-- ================================================================

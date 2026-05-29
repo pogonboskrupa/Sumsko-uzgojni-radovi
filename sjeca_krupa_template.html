@@ -190,6 +190,15 @@
   }
   input[type=number].new-input:focus { outline: none; border-color: #c0550a; background: #fff; }
 
+  .new-val {
+    display: block; text-align: right; font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; color: #8b4500; font-weight: 600; min-height: 16px;
+  }
+  .new-val.empty { color: var(--gray2); }
+
+  .nova-tab-btn { background: #fff3e0; color: #c05621; border: 1.5px dashed #f4a261; }
+  .nova-tab-btn.active { background: #f4a261; color: white; border-style: solid; }
+
   .td-total { background: var(--green-pale); font-weight: 700; color: var(--green-dark); border-top: 2px solid var(--green-light); }
   .td-grand { background: var(--green-dark); color: var(--white); font-weight: 700; font-size: 12px; }
 
@@ -426,6 +435,7 @@
 <div class="tab-bar no-print">
   <button class="tab-btn active" onclick="switchTab('visoka')">9.3 Visoka Šuma</button>
   <button class="tab-btn" onclick="switchTab('izdanacka')">9.4 Izdanačka Šuma</button>
+  <button class="tab-btn nova-tab-btn" onclick="switchTab('novagod')">📝 Nova Godina</button>
 </div>
 
 <!-- =========================================================
@@ -471,43 +481,43 @@
     </thead>
     <tbody>
 <!-- Odjel 13 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-left td-center">13</td><td class="td-center">1</td><td class="td-center">1116</td><td>49,7</td><td>2.700</td><td>2.315</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.699</td><td>2.314</td><td>799</td><td>1.515</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">2</td><td class="td-center">3201</td><td>18,8</td><td>544</td><td>453</td><td>6</td><td>4</td><td>3</td><td>2</td><td>538</td><td>449</td><td>76</td><td>373</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">3</td><td class="td-center">3201</td><td>1,3</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-left td-center">13</td><td class="td-center">1</td><td class="td-center">1116</td><td>49,7</td><td>2.700</td><td>2.315</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.699</td><td>2.314</td><td>799</td><td>1.515</td><td><span class="new-val" data-ni="0">—</span></td><td><span class="new-val" data-ni="1">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">2</td><td class="td-center">3201</td><td>18,8</td><td>544</td><td>453</td><td>6</td><td>4</td><td>3</td><td>2</td><td>538</td><td>449</td><td>76</td><td>373</td><td><span class="new-val" data-ni="2">—</span></td><td><span class="new-val" data-ni="3">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">3</td><td class="td-center">3201</td><td>1,3</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><span class="new-val" data-ni="4">—</span></td><td><span class="new-val" data-ni="5">—</span></td></tr>
 <!-- Odjel 35 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">1</td><td class="td-center">1202</td><td>12,2</td><td>661</td><td>575</td><td>36</td><td>29</td><td>25</td><td>5</td><td>626</td><td>546</td><td>243</td><td>303</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">2</td><td class="td-center">1117</td><td>78,8</td><td>4.477</td><td>3.857</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.476</td><td>3.856</td><td>1.559</td><td>2.298</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">3</td><td class="td-center">3202</td><td>7,9</td><td>279</td><td>216</td><td>182</td><td>136</td><td>97</td><td>39</td><td>97</td><td>80</td><td>11</td><td>69</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">1</td><td class="td-center">1202</td><td>12,2</td><td>661</td><td>575</td><td>36</td><td>29</td><td>25</td><td>5</td><td>626</td><td>546</td><td>243</td><td>303</td><td><span class="new-val" data-ni="6">—</span></td><td><span class="new-val" data-ni="7">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">2</td><td class="td-center">1117</td><td>78,8</td><td>4.477</td><td>3.857</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.476</td><td>3.856</td><td>1.559</td><td>2.298</td><td><span class="new-val" data-ni="8">—</span></td><td><span class="new-val" data-ni="9">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">3</td><td class="td-center">3202</td><td>7,9</td><td>279</td><td>216</td><td>182</td><td>136</td><td>97</td><td>39</td><td>97</td><td>80</td><td>11</td><td>69</td><td><span class="new-val" data-ni="10">—</span></td><td><span class="new-val" data-ni="11">—</span></td></tr>
 <!-- Odjel 50 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">50</td><td class="td-center">—</td><td class="td-center">1202</td><td>76,6</td><td>5.161</td><td>4.329</td><td>2.561</td><td>2.051</td><td>1.824</td><td>227</td><td>2.600</td><td>2.278</td><td>971</td><td>1.307</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">50</td><td class="td-center">—</td><td class="td-center">1202</td><td>76,6</td><td>5.161</td><td>4.329</td><td>2.561</td><td>2.051</td><td>1.824</td><td>227</td><td>2.600</td><td>2.278</td><td>971</td><td>1.307</td><td><span class="new-val" data-ni="12">—</span></td><td><span class="new-val" data-ni="13">—</span></td></tr>
 <!-- Odjel 54P -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">54 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>22,9</td><td>1.511</td><td>1.276</td><td>890</td><td>748</td><td>639</td><td>109</td><td>621</td><td>528</td><td>208</td><td>320</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">54 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>22,9</td><td>1.511</td><td>1.276</td><td>890</td><td>748</td><td>639</td><td>109</td><td>621</td><td>528</td><td>208</td><td>320</td><td><span class="new-val" data-ni="14">—</span></td><td><span class="new-val" data-ni="15">—</span></td></tr>
 <!-- Odjel 55 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">55</td><td class="td-center">—</td><td class="td-center">1202</td><td>63,7</td><td>5.195</td><td>4.258</td><td>3.221</td><td>2.521</td><td>2.193</td><td>328</td><td>1.974</td><td>1.737</td><td>789</td><td>948</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">55</td><td class="td-center">—</td><td class="td-center">1202</td><td>63,7</td><td>5.195</td><td>4.258</td><td>3.221</td><td>2.521</td><td>2.193</td><td>328</td><td>1.974</td><td>1.737</td><td>789</td><td>948</td><td><span class="new-val" data-ni="16">—</span></td><td><span class="new-val" data-ni="17">—</span></td></tr>
 <!-- Odjel 56 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">56</td><td class="td-center">—</td><td class="td-center">1202</td><td>48,8</td><td>3.877</td><td>3.206</td><td>2.526</td><td>2.042</td><td>1.779</td><td>263</td><td>1.351</td><td>1.164</td><td>439</td><td>725</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">56</td><td class="td-center">—</td><td class="td-center">1202</td><td>48,8</td><td>3.877</td><td>3.206</td><td>2.526</td><td>2.042</td><td>1.779</td><td>263</td><td>1.351</td><td>1.164</td><td>439</td><td>725</td><td><span class="new-val" data-ni="18">—</span></td><td><span class="new-val" data-ni="19">—</span></td></tr>
 <!-- Odjel 59/1 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">59/1</td><td class="td-center">—</td><td class="td-center">1202</td><td>43,1</td><td>3.724</td><td>3.087</td><td>2.221</td><td>1.753</td><td>1.545</td><td>208</td><td>1.503</td><td>1.334</td><td>658</td><td>676</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">59/1</td><td class="td-center">—</td><td class="td-center">1202</td><td>43,1</td><td>3.724</td><td>3.087</td><td>2.221</td><td>1.753</td><td>1.545</td><td>208</td><td>1.503</td><td>1.334</td><td>658</td><td>676</td><td><span class="new-val" data-ni="20">—</span></td><td><span class="new-val" data-ni="21">—</span></td></tr>
 <!-- Odjel 63 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">63</td><td class="td-center">—</td><td class="td-center">1202</td><td>52,2</td><td>4.033</td><td>3.339</td><td>1.982</td><td>1.545</td><td>1.309</td><td>236</td><td>2.051</td><td>1.794</td><td>796</td><td>998</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">63</td><td class="td-center">—</td><td class="td-center">1202</td><td>52,2</td><td>4.033</td><td>3.339</td><td>1.982</td><td>1.545</td><td>1.309</td><td>236</td><td>2.051</td><td>1.794</td><td>796</td><td>998</td><td><span class="new-val" data-ni="22">—</span></td><td><span class="new-val" data-ni="23">—</span></td></tr>
 <!-- Odjel 66 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>47,0</td><td>2.335</td><td>2.048</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.335</td><td>2.048</td><td>949</td><td>1.099</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">3202</td><td>5,0</td><td>30</td><td>25</td><td>24</td><td>20</td><td class="td-zero">0</td><td>20</td><td>6</td><td>5</td><td class="td-zero">0</td><td>5</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">3</td><td class="td-center">3202</td><td>1,7</td><td>10</td><td>8</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">4</td><td class="td-center">3202</td><td>0,4</td><td>4</td><td>3</td><td>3</td><td>2</td><td class="td-zero">0</td><td>2</td><td>1</td><td>1</td><td class="td-zero">0</td><td>1</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">5</td><td class="td-center">3208</td><td>9,3</td><td>50</td><td>43</td><td>27</td><td>22</td><td class="td-zero">0</td><td>22</td><td>23</td><td>21</td><td class="td-zero">0</td><td>21</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>47,0</td><td>2.335</td><td>2.048</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.335</td><td>2.048</td><td>949</td><td>1.099</td><td><span class="new-val" data-ni="24">—</span></td><td><span class="new-val" data-ni="25">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">3202</td><td>5,0</td><td>30</td><td>25</td><td>24</td><td>20</td><td class="td-zero">0</td><td>20</td><td>6</td><td>5</td><td class="td-zero">0</td><td>5</td><td><span class="new-val" data-ni="26">—</span></td><td><span class="new-val" data-ni="27">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">3</td><td class="td-center">3202</td><td>1,7</td><td>10</td><td>8</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><span class="new-val" data-ni="28">—</span></td><td><span class="new-val" data-ni="29">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">4</td><td class="td-center">3202</td><td>0,4</td><td>4</td><td>3</td><td>3</td><td>2</td><td class="td-zero">0</td><td>2</td><td>1</td><td>1</td><td class="td-zero">0</td><td>1</td><td><span class="new-val" data-ni="30">—</span></td><td><span class="new-val" data-ni="31">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">5</td><td class="td-center">3208</td><td>9,3</td><td>50</td><td>43</td><td>27</td><td>22</td><td class="td-zero">0</td><td>22</td><td>23</td><td>21</td><td class="td-zero">0</td><td>21</td><td><span class="new-val" data-ni="32">—</span></td><td><span class="new-val" data-ni="33">—</span></td></tr>
 <!-- Odjel 68/2 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">1</td><td class="td-center">1202</td><td>8,6</td><td>526</td><td>460</td><td>52</td><td>41</td><td>35</td><td>6</td><td>474</td><td>419</td><td>207</td><td>212</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">2</td><td class="td-center">1117</td><td>38,4</td><td>2.079</td><td>1.827</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.079</td><td>1.827</td><td>805</td><td>1.022</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">1</td><td class="td-center">1202</td><td>8,6</td><td>526</td><td>460</td><td>52</td><td>41</td><td>35</td><td>6</td><td>474</td><td>419</td><td>207</td><td>212</td><td><span class="new-val" data-ni="34">—</span></td><td><span class="new-val" data-ni="35">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">2</td><td class="td-center">1117</td><td>38,4</td><td>2.079</td><td>1.827</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.079</td><td>1.827</td><td>805</td><td>1.022</td><td><span class="new-val" data-ni="36">—</span></td><td><span class="new-val" data-ni="37">—</span></td></tr>
 <!-- Odjel 71P -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">1</td><td class="td-center">1202</td><td>29,0</td><td>1.835</td><td>1.551</td><td>926</td><td>778</td><td>664</td><td>114</td><td>909</td><td>773</td><td>356</td><td>417</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,9</td><td>122</td><td>104</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>122</td><td>104</td><td>45</td><td>59</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">1</td><td class="td-center">1202</td><td>29,0</td><td>1.835</td><td>1.551</td><td>926</td><td>778</td><td>664</td><td>114</td><td>909</td><td>773</td><td>356</td><td>417</td><td><span class="new-val" data-ni="38">—</span></td><td><span class="new-val" data-ni="39">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,9</td><td>122</td><td>104</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>122</td><td>104</td><td>45</td><td>59</td><td><span class="new-val" data-ni="40">—</span></td><td><span class="new-val" data-ni="41">—</span></td></tr>
 <!-- Odjel 97 -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">1</td><td class="td-center">1202</td><td>58,8</td><td>3.962</td><td>3.272</td><td>1.887</td><td>1.489</td><td>1.253</td><td>236</td><td>2.075</td><td>1.783</td><td>646</td><td>1.137</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">2</td><td class="td-center">1117</td><td>16,2</td><td>927</td><td>786</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>927</td><td>786</td><td>255</td><td>531</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">1</td><td class="td-center">1202</td><td>58,8</td><td>3.962</td><td>3.272</td><td>1.887</td><td>1.489</td><td>1.253</td><td>236</td><td>2.075</td><td>1.783</td><td>646</td><td>1.137</td><td><span class="new-val" data-ni="42">—</span></td><td><span class="new-val" data-ni="43">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">2</td><td class="td-center">1117</td><td>16,2</td><td>927</td><td>786</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>927</td><td>786</td><td>255</td><td>531</td><td><span class="new-val" data-ni="44">—</span></td><td><span class="new-val" data-ni="45">—</span></td></tr>
 <!-- Odjel 113P -->
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>11,9</td><td>449</td><td>383</td><td>138</td><td>114</td><td>96</td><td>18</td><td>311</td><td>269</td><td>100</td><td>169</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>55,0</td><td>4.092</td><td>3.472</td><td>171</td><td>140</td><td>114</td><td>26</td><td>3.921</td><td>3.332</td><td>1.113</td><td>2.219</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>11,9</td><td>449</td><td>383</td><td>138</td><td>114</td><td>96</td><td>18</td><td>311</td><td>269</td><td>100</td><td>169</td><td><span class="new-val" data-ni="46">—</span></td><td><span class="new-val" data-ni="47">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>55,0</td><td>4.092</td><td>3.472</td><td>171</td><td>140</td><td>114</td><td>26</td><td>3.921</td><td>3.332</td><td>1.113</td><td>2.219</td><td><span class="new-val" data-ni="48">—</span></td><td><span class="new-val" data-ni="49">—</span></td></tr>
 <!-- TOTAL -->
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „RISOVAC-KRUPA"</td>
@@ -550,20 +560,20 @@
       </tr>
     </thead>
     <tbody>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">1</td><td class="td-center">1116</td><td>20,7</td><td>1.196</td><td>1.017</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.196</td><td>1.017</td><td>203</td><td>814</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>1,2</td><td>110</td><td>95</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>110</td><td>95</td><td>42</td><td>53</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,8</td><td>98</td><td>84</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>98</td><td>84</td><td>31</td><td>53</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">43 p</td><td class="td-center">—</td><td class="td-center">1211</td><td>30,2</td><td>1.099</td><td>740</td><td>220</td><td>140</td><td>40</td><td>100</td><td>879</td><td>600</td><td>160</td><td>440</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">60</td><td class="td-center">—</td><td class="td-center">1201</td><td>49,0</td><td>3.551</td><td>3.061</td><td>463</td><td>359</td><td>295</td><td>65</td><td>3.088</td><td>2.701</td><td>1.050</td><td>1.651</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">61</td><td class="td-center">—</td><td class="td-center">1202</td><td>87,3</td><td>4.774</td><td>4.105</td><td>715</td><td>556</td><td>454</td><td>102</td><td>4.059</td><td>3.549</td><td>1.393</td><td>2.156</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">1</td><td class="td-center">1117</td><td>10,0</td><td>780</td><td>430</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>780</td><td>430</td><td>190</td><td>240</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">2</td><td class="td-center">3201</td><td>9,2</td><td>189</td><td>157</td><td>41</td><td>31</td><td>11</td><td>20</td><td>148</td><td>126</td><td>21</td><td>105</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">3</td><td class="td-center">3201</td><td>0,5</td><td>27</td><td>21</td><td>7</td><td>5</td><td>2</td><td>3</td><td>20</td><td>16</td><td class="td-zero">0</td><td>16</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>68,7</td><td>3.975</td><td>3.334</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>3.975</td><td>3.334</td><td>1.025</td><td>2.309</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">1</td><td class="td-center">1117</td><td>71,6</td><td>4.113</td><td>3.558</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.113</td><td>3.558</td><td>1.277</td><td>2.281</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">2</td><td class="td-center">1116</td><td>11,0</td><td>740</td><td>641</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>740</td><td>641</td><td>253</td><td>388</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">69 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>25,8</td><td>1.309</td><td>1.204</td><td>102</td><td>114</td><td>82</td><td>32</td><td>1.207</td><td>1.090</td><td>390</td><td>700</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">1</td><td class="td-center">3208</td><td>9,6</td><td>190</td><td>90</td><td>120</td><td>65</td><td class="td-zero">0</td><td>65</td><td>70</td><td>25</td><td class="td-zero">0</td><td>25</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">1</td><td class="td-center">1116</td><td>20,7</td><td>1.196</td><td>1.017</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.196</td><td>1.017</td><td>203</td><td>814</td><td><span class="new-val" data-ni="50">—</span></td><td><span class="new-val" data-ni="51">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>1,2</td><td>110</td><td>95</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>110</td><td>95</td><td>42</td><td>53</td><td><span class="new-val" data-ni="52">—</span></td><td><span class="new-val" data-ni="53">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,8</td><td>98</td><td>84</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>98</td><td>84</td><td>31</td><td>53</td><td><span class="new-val" data-ni="54">—</span></td><td><span class="new-val" data-ni="55">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">43 p</td><td class="td-center">—</td><td class="td-center">1211</td><td>30,2</td><td>1.099</td><td>740</td><td>220</td><td>140</td><td>40</td><td>100</td><td>879</td><td>600</td><td>160</td><td>440</td><td><span class="new-val" data-ni="56">—</span></td><td><span class="new-val" data-ni="57">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">60</td><td class="td-center">—</td><td class="td-center">1201</td><td>49,0</td><td>3.551</td><td>3.061</td><td>463</td><td>359</td><td>295</td><td>65</td><td>3.088</td><td>2.701</td><td>1.050</td><td>1.651</td><td><span class="new-val" data-ni="58">—</span></td><td><span class="new-val" data-ni="59">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">61</td><td class="td-center">—</td><td class="td-center">1202</td><td>87,3</td><td>4.774</td><td>4.105</td><td>715</td><td>556</td><td>454</td><td>102</td><td>4.059</td><td>3.549</td><td>1.393</td><td>2.156</td><td><span class="new-val" data-ni="60">—</span></td><td><span class="new-val" data-ni="61">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">1</td><td class="td-center">1117</td><td>10,0</td><td>780</td><td>430</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>780</td><td>430</td><td>190</td><td>240</td><td><span class="new-val" data-ni="62">—</span></td><td><span class="new-val" data-ni="63">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">2</td><td class="td-center">3201</td><td>9,2</td><td>189</td><td>157</td><td>41</td><td>31</td><td>11</td><td>20</td><td>148</td><td>126</td><td>21</td><td>105</td><td><span class="new-val" data-ni="64">—</span></td><td><span class="new-val" data-ni="65">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">3</td><td class="td-center">3201</td><td>0,5</td><td>27</td><td>21</td><td>7</td><td>5</td><td>2</td><td>3</td><td>20</td><td>16</td><td class="td-zero">0</td><td>16</td><td><span class="new-val" data-ni="66">—</span></td><td><span class="new-val" data-ni="67">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>68,7</td><td>3.975</td><td>3.334</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>3.975</td><td>3.334</td><td>1.025</td><td>2.309</td><td><span class="new-val" data-ni="68">—</span></td><td><span class="new-val" data-ni="69">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">1</td><td class="td-center">1117</td><td>71,6</td><td>4.113</td><td>3.558</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.113</td><td>3.558</td><td>1.277</td><td>2.281</td><td><span class="new-val" data-ni="70">—</span></td><td><span class="new-val" data-ni="71">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">2</td><td class="td-center">1116</td><td>11,0</td><td>740</td><td>641</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>740</td><td>641</td><td>253</td><td>388</td><td><span class="new-val" data-ni="72">—</span></td><td><span class="new-val" data-ni="73">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">69 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>25,8</td><td>1.309</td><td>1.204</td><td>102</td><td>114</td><td>82</td><td>32</td><td>1.207</td><td>1.090</td><td>390</td><td>700</td><td><span class="new-val" data-ni="74">—</span></td><td><span class="new-val" data-ni="75">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">1</td><td class="td-center">3208</td><td>9,6</td><td>190</td><td>90</td><td>120</td><td>65</td><td class="td-zero">0</td><td>65</td><td>70</td><td>25</td><td class="td-zero">0</td><td>25</td><td><span class="new-val" data-ni="76">—</span></td><td><span class="new-val" data-ni="77">—</span></td></tr>
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GRMEČ-JASENICA"</td>
   <td class="td-total">396,6</td><td class="td-total">22.151</td><td class="td-total">18.537</td>
@@ -605,8 +615,8 @@
       </tr>
     </thead>
     <tbody>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">1</td><td class="td-center">1101</td><td>10,0</td><td>640</td><td>500</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>640</td><td>500</td><td>180</td><td>320</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">2</td><td class="td-center">1102</td><td>3,0</td><td>147</td><td>124</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>147</td><td>124</td><td>22</td><td>102</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">1</td><td class="td-center">1101</td><td>10,0</td><td>640</td><td>500</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>640</td><td>500</td><td>180</td><td>320</td><td><span class="new-val" data-ni="78">—</span></td><td><span class="new-val" data-ni="79">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">2</td><td class="td-center">1102</td><td>3,0</td><td>147</td><td>124</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>147</td><td>124</td><td>22</td><td>102</td><td><span class="new-val" data-ni="80">—</span></td><td><span class="new-val" data-ni="81">—</span></td></tr>
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GOMILA"</td>
   <td class="td-total">13,0</td><td class="td-total">787</td><td class="td-total">624</td>
@@ -664,8 +674,8 @@
       </tr>
     </thead>
     <tbody>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">8</td><td class="td-center">4412</td><td>26,4</td><td>216</td><td>180</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>216</td><td>180</td><td class="td-zero">0</td><td>180</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">3</td><td class="td-center">4115</td><td>5,0</td><td>636</td><td>445</td><td>68</td><td>45</td><td>15</td><td>30</td><td>568</td><td>400</td><td>65</td><td>335</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">8</td><td class="td-center">4412</td><td>26,4</td><td>216</td><td>180</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>216</td><td>180</td><td class="td-zero">0</td><td>180</td><td><span class="new-val" data-ni="82">—</span></td><td><span class="new-val" data-ni="83">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">3</td><td class="td-center">4115</td><td>5,0</td><td>636</td><td>445</td><td>68</td><td>45</td><td>15</td><td>30</td><td>568</td><td>400</td><td>65</td><td>335</td><td><span class="new-val" data-ni="84">—</span></td><td><span class="new-val" data-ni="85">—</span></td></tr>
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „RISOVAC-KRUPA" (izd.)</td>
   <td class="td-total">31,4</td><td class="td-total">852</td><td class="td-total">625</td>
@@ -707,10 +717,10 @@
       </tr>
     </thead>
     <tbody>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">2</td><td class="td-center">4119</td><td>50,5</td><td>1.294</td><td>1.100</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.294</td><td>1.100</td><td>100</td><td>1.000</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">4115</td><td>68,2</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td>1.159</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">2</td><td class="td-center">4107</td><td>80,4</td><td>488</td><td>328</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td>478</td><td>320</td><td>25</td><td>295</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">88 p</td><td class="td-center">—</td><td class="td-center">4107</td><td>50,0</td><td>1.805</td><td>1.200</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.805</td><td>1.200</td><td>20</td><td>1.180</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">2</td><td class="td-center">4119</td><td>50,5</td><td>1.294</td><td>1.100</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.294</td><td>1.100</td><td>100</td><td>1.000</td><td><span class="new-val" data-ni="86">—</span></td><td><span class="new-val" data-ni="87">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">4115</td><td>68,2</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td>1.159</td><td><span class="new-val" data-ni="88">—</span></td><td><span class="new-val" data-ni="89">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">2</td><td class="td-center">4107</td><td>80,4</td><td>488</td><td>328</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td>478</td><td>320</td><td>25</td><td>295</td><td><span class="new-val" data-ni="90">—</span></td><td><span class="new-val" data-ni="91">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">88 p</td><td class="td-center">—</td><td class="td-center">4107</td><td>50,0</td><td>1.805</td><td>1.200</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.805</td><td>1.200</td><td>20</td><td>1.180</td><td><span class="new-val" data-ni="92">—</span></td><td><span class="new-val" data-ni="93">—</span></td></tr>
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GRMEČ-JASENICA" (izd.)</td>
   <td class="td-total">249,1</td><td class="td-total">4.951</td><td class="td-total">3.787</td>
@@ -752,8 +762,8 @@
       </tr>
     </thead>
     <tbody>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">15</td><td class="td-center">1</td><td class="td-center">4111</td><td>32,7</td><td>450</td><td>383</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>450</td><td>383</td><td class="td-zero">0</td><td>383</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
-<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">25</td><td class="td-center">1</td><td class="td-center">4112</td><td>41,6</td><td>750</td><td>637</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>750</td><td>637</td><td class="td-zero">0</td><td>637</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">15</td><td class="td-center">1</td><td class="td-center">4111</td><td>32,7</td><td>450</td><td>383</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>450</td><td>383</td><td class="td-zero">0</td><td>383</td><td><span class="new-val" data-ni="94">—</span></td><td><span class="new-val" data-ni="95">—</span></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">25</td><td class="td-center">1</td><td class="td-center">4112</td><td>41,6</td><td>750</td><td>637</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>750</td><td>637</td><td class="td-zero">0</td><td>637</td><td><span class="new-val" data-ni="96">—</span></td><td><span class="new-val" data-ni="97">—</span></td></tr>
 <tr>
   <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „VOJSKOVA" (izd.)</td>
   <td class="td-total">74,3</td><td class="td-total">1.200</td><td class="td-total">1.020</td>
@@ -789,6 +799,16 @@
 
 </div><!-- end tab-izdanacka -->
 
+<div id="tab-novagod" class="tab-panel">
+  <div style="padding:16px 16px 8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+    <span style="font-size:13px;font-weight:700;color:var(--green-dark);">Unos podataka za godinu:</span>
+    <span id="nova-year-display" style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:#c05621;">—</span>
+    <button class="btn btn-accent" onclick="confirmData()" style="margin-left:auto;">✓ Potvrdi i prikaži u tabelama</button>
+    <button class="btn btn-outline btn-sm" onclick="clearNovaData()">✗ Obriši unos</button>
+  </div>
+  <div id="nova-form-container" style="padding:0 16px 32px;"></div>
+</div>
+
 <script>
 const DEFAULT_YEAR = new Date().getFullYear() + 1;
 
@@ -798,9 +818,13 @@ function init() {
   updateYearLabel(false);
   loadData();
   updateProgress();
+  // Assign data-ni indices to all .new-val spans
+  document.querySelectorAll('.new-val').forEach((s, i) => s.setAttribute('data-ni', i));
+  buildNovaForm();
+  renderNewVals();
   // save on any new-input change
   document.addEventListener('input', e => {
-    if (e.target.classList.contains('new-input')) saveData();
+    if (e.target.classList.contains('new-input') && !e.target.classList.contains('nova-input')) saveData();
   });
 }
 
@@ -812,7 +836,6 @@ function saveData() {
   const key = getStorageKey();
   const data = {};
   document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => { data['cb' + i] = cb.checked; });
-  document.querySelectorAll('input.new-input').forEach((inp, i) => { data['ni' + i] = inp.value; });
   try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
 }
 
@@ -824,9 +847,7 @@ function loadData() {
   document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
     if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
   });
-  document.querySelectorAll('input.new-input').forEach((inp, i) => {
-    if (data['ni' + i] !== undefined) inp.value = data['ni' + i];
-  });
+  renderNewVals();
 }
 
 function switchTab(name) {
@@ -843,11 +864,11 @@ function updateYearLabel(doLoad = true) {
   document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
   document.querySelectorAll('[id^=newYearH1]').forEach(el => el.textContent = y + ' – Unos');
   if (doLoad) {
-    // clear inputs then load saved data for newly selected year
-    document.querySelectorAll('input.new-input').forEach(inp => inp.value = '');
     document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
     loadData();
     updateProgress();
+    buildNovaForm();
+    renderNewVals();
   }
 }
 
@@ -879,7 +900,7 @@ function exportCSV() {
     const cb = row.querySelector('input[type=checkbox]');
     if (!tds.length || !cb) return;
     const gj = row.closest('.section')?.querySelector('h2')?.textContent?.split(' – ')[0] || '';
-    const niInputs = row.querySelectorAll('input.new-input');
+    const niSpans = row.querySelectorAll('.new-val');
     rows.push([
       gj,
       tds[1]?.textContent?.trim() || '',
@@ -888,8 +909,8 @@ function exportCSV() {
       tds[4]?.textContent?.trim() || '',
       tds[5]?.textContent?.trim() || '',
       tds[6]?.textContent?.trim() || '',
-      niInputs[0]?.value || '',
-      niInputs[1]?.value || '',
+      niSpans[0]?.textContent?.trim() || '',
+      niSpans[1]?.textContent?.trim() || '',
       cb.checked ? 'DA' : 'NE'
     ]);
   });
@@ -898,6 +919,120 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = 'sjeca_krupa_' + y + '.csv';
   a.click();
+}
+
+function renderNewVals() {
+  document.querySelectorAll('.new-val').forEach((span, i) => {
+    const key = getStorageKey();
+    let data;
+    try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
+    const val = data ? data['ni' + i] : '';
+    span.textContent = val ? val : '—';
+    span.classList.toggle('empty', !val);
+  });
+}
+
+function buildNovaForm() {
+  const container = document.getElementById('nova-form-container');
+  if (!container) return;
+  const y = document.getElementById('newYear').value;
+  document.getElementById('nova-year-display').textContent = y;
+
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(getStorageKey()) || '{}'); } catch(e) {}
+
+  let html = '';
+
+  const sections = document.querySelectorAll('.tab-panel:not(#tab-novagod) .section');
+  sections.forEach(section => {
+    const sectionTitle = section.querySelector('h2')?.textContent || '';
+    const rows = section.querySelectorAll('tbody tr:not(:last-child)');
+    if (!rows.length) return;
+
+    let sectionHasInputs = false;
+    rows.forEach(row => {
+      if (row.querySelectorAll('.new-val').length > 0) sectionHasInputs = true;
+    });
+    if (!sectionHasInputs) return;
+
+    html += `<div style="margin-bottom:20px;background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;">`;
+    html += `<div style="background:var(--green-dark);color:white;padding:8px 16px;font-size:12px;font-weight:700;">${sectionTitle}</div>`;
+    html += `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">`;
+    html += `<thead><tr style="background:var(--green-pale);"><th style="padding:6px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Odjel/Ods.</th>`;
+    html += `<th style="padding:6px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Bruto (m³)</th><th style="padding:6px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Neto (m³)</th>`;
+    html += `</tr></thead><tbody>`;
+
+    rows.forEach(row => {
+      const newVals = row.querySelectorAll('.new-val');
+      if (!newVals.length) return;
+
+      const tds = row.querySelectorAll('td');
+      let label = '';
+      for (let i = 1; i < Math.min(tds.length, 5); i++) {
+        const t = tds[i]?.textContent?.trim();
+        if (t && t !== '—') label += (label ? ' / ' : '') + t;
+      }
+
+      html += `<tr style="border-bottom:1px solid var(--gray1);">`;
+      html += `<td style="padding:5px 10px;font-family:'IBM Plex Mono',monospace;">${label}</td>`;
+
+      newVals.forEach(span => {
+        const idx = parseInt(span.getAttribute('data-ni'));
+        const savedVal = saved['ni' + idx] || '';
+        html += `<td style="padding:5px 10px;text-align:right;">`;
+        html += `<input type="number" class="nova-input new-input" data-target-ni="${idx}" value="${savedVal}" placeholder="—" step="0.01"
+          style="width:90px;border:1.5px solid #f4a261;border-radius:3px;padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:#fff8ee;color:#8b4500;text-align:right;"
+          oninput="novaInputChange(this)">`;
+        html += `</td>`;
+      });
+
+      html += `</tr>`;
+    });
+
+    html += `</tbody></table></div></div>`;
+  });
+
+  container.innerHTML = html || '<p style="color:#888;padding:20px;">Nema redova za unos.</p>';
+}
+
+function novaInputChange(input) {
+  const idx = input.getAttribute('data-target-ni');
+  const key = getStorageKey();
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+  data['ni' + idx] = input.value;
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+
+function confirmData() {
+  const key = getStorageKey();
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
+  document.querySelectorAll('.nova-input').forEach(inp => {
+    const idx = inp.getAttribute('data-target-ni');
+    data['ni' + idx] = inp.value;
+  });
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+  renderNewVals();
+  const firstTabBtn = document.querySelector('.tab-btn:not(.nova-tab-btn)');
+  const firstTabPanel = document.querySelector('.tab-panel:not(#tab-novagod)');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  if (firstTabBtn) firstTabBtn.classList.add('active');
+  if (firstTabPanel) firstTabPanel.classList.add('active');
+  const btn = event.target;
+  const orig = btn.textContent;
+  btn.textContent = '✓ Sačuvano!';
+  btn.style.background = '#27ae60';
+  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
+}
+
+function clearNovaData() {
+  if (!confirm('Obrisati sve unesene podatke za ovu godinu?')) return;
+  const key = getStorageKey();
+  try { localStorage.removeItem(key); } catch(e) {}
+  document.querySelectorAll('.nova-input').forEach(inp => inp.value = '');
+  renderNewVals();
 }
 
 init();
