@@ -374,14 +374,12 @@
 
 <!-- YEAR BAR -->
 <div class="year-bar no-print">
-  <label>Referentna godina:</label>
-  <span class="year-pill">📋 2026</span>
-  <label>Nova godina za unos:</label>
-  <input type="number" id="newYear" value="2027" min="2024" max="2035" onchange="updateYearLabel()">
-  <span class="new-pill" id="newYearPill">✎ 2027</span>
+  <label>Godina plana:</label>
+  <input type="number" id="newYear" min="2024" max="2040" onchange="updateYearLabel()">
+  <span class="new-pill" id="newYearPill">✎ —</span>
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#52b788"></div> Plan 2026</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#f4a261"></div> Unos <span id="legendYear">2027</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#52b788"></div> Referentni plan (tekuća god.)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f4a261"></div> Unos <span id="legendYear">—</span></div>
     <div class="legend-item"><input type="checkbox" checked disabled> Izvršeno</div>
   </div>
 </div>
@@ -792,6 +790,45 @@
 </div><!-- end tab-izdanacka -->
 
 <script>
+const DEFAULT_YEAR = new Date().getFullYear() + 1;
+
+function init() {
+  const inp = document.getElementById('newYear');
+  inp.value = DEFAULT_YEAR;
+  updateYearLabel(false);
+  loadData();
+  updateProgress();
+  // save on any new-input change
+  document.addEventListener('input', e => {
+    if (e.target.classList.contains('new-input')) saveData();
+  });
+}
+
+function getStorageKey() {
+  return 'sjeca_plan_' + document.getElementById('newYear').value;
+}
+
+function saveData() {
+  const key = getStorageKey();
+  const data = {};
+  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => { data['cb' + i] = cb.checked; });
+  document.querySelectorAll('input.new-input').forEach((inp, i) => { data['ni' + i] = inp.value; });
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadData() {
+  const key = getStorageKey();
+  let data;
+  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
+  if (!data) return;
+  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
+    if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
+  });
+  document.querySelectorAll('input.new-input').forEach((inp, i) => {
+    if (data['ni' + i] !== undefined) inp.value = data['ni' + i];
+  });
+}
+
 function switchTab(name) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -799,12 +836,19 @@ function switchTab(name) {
   event.target.classList.add('active');
 }
 
-function updateYearLabel() {
+function updateYearLabel(doLoad = true) {
   const y = document.getElementById('newYear').value;
   document.getElementById('newYearPill').textContent = '✎ ' + y;
   document.getElementById('legendYear').textContent = y;
   document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
   document.querySelectorAll('[id^=newYearH1]').forEach(el => el.textContent = y + ' – Unos');
+  if (doLoad) {
+    // clear inputs then load saved data for newly selected year
+    document.querySelectorAll('input.new-input').forEach(inp => inp.value = '');
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    loadData();
+    updateProgress();
+  }
 }
 
 function updateProgress() {
@@ -815,11 +859,11 @@ function updateProgress() {
   document.getElementById('progressSub').textContent = checked.length + ' / ' + all.length + ' odjela izvršeno';
   document.getElementById('progressBar').style.width = pct + '%';
   document.getElementById('progressText').textContent = pct + '%';
-  // row highlighting
   document.querySelectorAll('tbody tr').forEach(row => {
     const cb = row.querySelector('input[type=checkbox]');
-    if (cb) { row.classList.toggle('done-row', cb.checked); }
+    if (cb) row.classList.toggle('done-row', cb.checked);
   });
+  saveData();
 }
 
 function checkAll(state) {
@@ -828,12 +872,14 @@ function checkAll(state) {
 }
 
 function exportCSV() {
-  const rows = [['GJ', 'Odjel', 'Odsjek', 'G.Klasa', 'ha', 'Bruto_2026', 'Neto_2026', 'Izvrse.']];
+  const y = document.getElementById('newYear').value;
+  const rows = [['GJ', 'Odjel', 'Odsjek', 'G.Klasa', 'ha', 'Bruto_ref', 'Neto_ref', 'Bruto_' + y, 'Neto_' + y, 'Izvrseno']];
   document.querySelectorAll('tbody tr:not(:last-child)').forEach(row => {
     const tds = row.querySelectorAll('td');
     const cb = row.querySelector('input[type=checkbox]');
     if (!tds.length || !cb) return;
     const gj = row.closest('.section')?.querySelector('h2')?.textContent?.split(' – ')[0] || '';
+    const niInputs = row.querySelectorAll('input.new-input');
     rows.push([
       gj,
       tds[1]?.textContent?.trim() || '',
@@ -842,17 +888,19 @@ function exportCSV() {
       tds[4]?.textContent?.trim() || '',
       tds[5]?.textContent?.trim() || '',
       tds[6]?.textContent?.trim() || '',
+      niInputs[0]?.value || '',
+      niInputs[1]?.value || '',
       cb.checked ? 'DA' : 'NE'
     ]);
   });
   const csv = rows.map(r => r.join(';')).join('\n');
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-  a.download = 'sjeca_krupa_2026.csv';
+  a.download = 'sjeca_krupa_' + y + '.csv';
   a.click();
 }
 
-updateProgress();
+init();
 </script>
 </body>
 </html>

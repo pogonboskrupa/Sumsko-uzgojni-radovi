@@ -333,14 +333,12 @@
 
 <!-- YEAR BAR -->
 <div class="year-bar no-print">
-  <label>Referentna godina:</label>
-  <span class="year-pill">📋 2026</span>
-  <label>Nova godina:</label>
-  <input type="number" id="newYear" value="2027" min="2024" max="2040" onchange="updateYearLabel()">
-  <span class="new-pill" id="newYearPill">✎ 2027</span>
+  <label>Godina plana:</label>
+  <input type="number" id="newYear" min="2024" max="2040" onchange="updateYearLabel()">
+  <span class="new-pill" id="newYearPill">✎ —</span>
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#52b788;"></div> Plan 2026 (10-god. / godišnji ŠGO)</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e76f51;"></div> Unos <span id="legendYear">2027</span></div>
+    <div class="legend-item"><div class="legend-dot" style="background:#52b788;"></div> Referentni plan (10-god. / ŠGO)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e76f51;"></div> Unos <span id="legendYear">—</span></div>
     <div class="legend-item"><input type="checkbox" checked disabled> Izvršeno</div>
   </div>
 </div>
@@ -756,6 +754,44 @@
 </div>
 
 <script>
+const DEFAULT_YEAR = new Date().getFullYear() + 1;
+
+function init() {
+  const inp = document.getElementById('newYear');
+  inp.value = DEFAULT_YEAR;
+  updateYearLabel(false);
+  loadData();
+  updateProgress();
+  document.addEventListener('input', e => {
+    if (e.target.classList.contains('new-input')) saveData();
+  });
+}
+
+function getStorageKey() {
+  return 'uzgojni_plan_' + document.getElementById('newYear').value;
+}
+
+function saveData() {
+  const key = getStorageKey();
+  const data = {};
+  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => { data['cb' + i] = cb.checked; });
+  document.querySelectorAll('input.new-input').forEach((inp, i) => { data['ni' + i] = inp.value; });
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadData() {
+  const key = getStorageKey();
+  let data;
+  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
+  if (!data) return;
+  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
+    if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
+  });
+  document.querySelectorAll('input.new-input').forEach((inp, i) => {
+    if (data['ni' + i] !== undefined) inp.value = data['ni' + i];
+  });
+}
+
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -763,11 +799,17 @@ function switchTab(name, btn) {
   event.target.classList.add('active');
 }
 
-function updateYearLabel() {
+function updateYearLabel(doLoad = true) {
   const y = document.getElementById('newYear').value;
   document.getElementById('newYearPill').textContent = '✎ ' + y;
   document.getElementById('legendYear').textContent = y;
   document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
+  if (doLoad) {
+    document.querySelectorAll('input.new-input').forEach(inp => inp.value = '');
+    document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    loadData();
+    updateProgress();
+  }
 }
 
 function updateProgress() {
@@ -778,11 +820,11 @@ function updateProgress() {
   document.getElementById('prog-sub').textContent = checked.length + ' / ' + all.length + ' izvršeno';
   document.getElementById('prog-bar').style.width = pct + '%';
   document.getElementById('prog-lbl').textContent = pct + '%';
-  // highlight rows
   document.querySelectorAll('tr').forEach(row => {
     const cb = row.querySelector('input[type=checkbox]');
     if (cb) row.classList.toggle('done-row', cb.checked);
   });
+  saveData();
 }
 
 function checkAll(state) {
@@ -790,7 +832,7 @@ function checkAll(state) {
   updateProgress();
 }
 
-updateProgress();
+init();
 </script>
 </body>
 </html>
