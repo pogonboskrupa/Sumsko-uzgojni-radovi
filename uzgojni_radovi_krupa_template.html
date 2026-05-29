@@ -174,6 +174,15 @@
   .cat-iv  { background: #74c69d; }
   .cat-badge { display: inline-block; color: white; border-radius: 3px; padding: 2px 7px; font-size: 10px; font-weight: 700; min-width: 28px; text-align: center; margin-right: 6px; }
 
+  /* inner tabs for Nova Godina */
+  .inner-tab-bar { display:flex; gap:4px; padding:0 16px 0; border-bottom:2px solid #f4a261; margin-bottom:0; }
+  .inner-tab-btn { padding:6px 14px; background:var(--gray1); border:none; border-radius:5px 5px 0 0; font-family:inherit; font-size:11px; font-weight:600; color:var(--gray3); cursor:pointer; }
+  .inner-tab-btn.active { background:#f4a261; color:white; }
+  .inner-tab-panel { display:none; }
+  .inner-tab-panel.active { display:block; }
+  .nova-cell-input { width:80px; border:1.5px solid #f4a261; border-radius:3px; padding:2px 5px; font-family:'IBM Plex Mono',monospace; font-size:11px; background:#fff8ee; color:#8b4500; text-align:right; }
+  .nova-cell-input:focus { outline:none; border-color:#c05621; background:#fff; }
+
   /* ═══════════════════════════════════════════
      PRO PRINT STYLES – A4 Portrait
   ═══════════════════════════════════════════ */
@@ -764,14 +773,204 @@
 </div>
 
 <div id="tab-novagod" class="tab-panel">
-  <div style="padding:16px 16px 8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+  <!-- header bar -->
+  <div style="padding:14px 16px 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:white;border-bottom:1px solid var(--gray1);">
     <span style="font-size:13px;font-weight:700;color:var(--green-dark);">Unos podataka za godinu:</span>
     <span id="nova-year-display" style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:#c05621;">—</span>
-    <button class="btn btn-accent" onclick="confirmData()" style="margin-left:auto;">✓ Potvrdi i prikaži u tabelama</button>
-    <button class="btn btn-outline btn-sm" onclick="clearNovaData()">✗ Obriši unos</button>
+    <button class="btn btn-accent no-print" onclick="confirmData()" style="margin-left:auto;">✓ Potvrdi i prikaži u tabelama</button>
+    <button class="btn btn-outline btn-sm no-print" onclick="clearNovaData()">✗ Obriši unos</button>
   </div>
-  <div id="nova-form-container" style="padding:0 16px 32px;"></div>
-</div>
+  <!-- inner tab bar -->
+  <div class="inner-tab-bar no-print">
+    <button class="inner-tab-btn active" onclick="switchInnerTab('zbir')">📊 Zbirna Tabela</button>
+    <button class="inner-tab-btn" onclick="switchInnerTab('priprema')">I – Priprema</button>
+    <button class="inner-tab-btn" onclick="switchInnerTab('posumljavanje')">II – Pošumljavanje</button>
+    <button class="inner-tab-btn" onclick="switchInnerTab('njege')">III – Njege</button>
+  </div>
+
+  <!-- INNER TAB: ZBIRNA TABELA -->
+  <div id="nova-zbir" class="inner-tab-panel active">
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge">10.3</span><h2>Zbirna tabela – unos za <span class="nova-year-lbl">—</span></h2></div>
+    <div class="sum-table-wrap"><table class="sum-table">
+      <thead><tr>
+        <th style="width:30px">Kat.</th><th style="width:32px">R.br.</th>
+        <th>VRSTA RADOVA</th>
+        <th class="num">Plan 10 god. (ha)</th>
+        <th class="num">Godiš. plan ŠGO (ha)</th>
+        <th class="num" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="roman"></td><td class="rbr">1</td><td>Priprema terena za pošumljavanje</td><td class="num">510,88</td><td class="num">51,09</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="0" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">2</td><td>Priprema terena za prirodnu obnovu</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="1" step="0.01" placeholder="—"></td></tr>
+        <tr class="section-row"><td class="roman"><span class="cat-badge cat-i">I</span></td><td class="rbr"></td><td class="bold">UKUPNO PRIPREMA TERENA</td><td class="num bold">510,88</td><td class="num bold">51,09</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="2" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">3</td><td>Pošumljavanje unutar visokih šuma</td><td class="num">434,76</td><td class="num">43,48</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="3" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">4</td><td>Pošumljavanje unutar izdanačkih šuma</td><td class="num">51,62</td><td class="num">5,16</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="4" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">5</td><td>Pošumljavanje goleti i šibljaka</td><td class="num">24,50</td><td class="num">2,45</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="5" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">6</td><td>Popunjavanje kultura po kolaudaciji</td><td class="num">98,12</td><td class="num">9,81</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="6" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">7</td><td>Popunjavanje prirodnog podmlatka</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="7" step="0.01" placeholder="—"></td></tr>
+        <tr class="section-row"><td class="roman"><span class="cat-badge cat-ii">II</span></td><td class="rbr"></td><td class="bold">UKUPNO POŠUMLJAVANJE</td><td class="num bold">609,00</td><td class="num bold">60,90</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="8" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">8</td><td>Njege kultura (prorede) – kresanje</td><td class="num">645,20</td><td class="num">64,52</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="9" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">9</td><td>Njega šumskih kultura ispod taks. praga</td><td class="num">160,30</td><td class="num">16,03</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="10" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">10</td><td>Njege izdanačkih šuma – melioracije</td><td class="num">4.544,80</td><td class="num">454,48</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="11" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">11</td><td>Njega lišćarskih mladika izdanačkih šuma</td><td class="num">103,30</td><td class="num">10,33</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="12" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">12</td><td>Njega mladika iz šuma pitomog kestena</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="13" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">13</td><td>Njega prirodnog podmlatka</td><td class="num">1.040,71</td><td class="num">104,07</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="14" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">14</td><td>Njega okalemljenih kultura</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="15" step="0.01" placeholder="—"></td></tr>
+        <tr class="section-row"><td class="roman"><span class="cat-badge cat-iii">III</span></td><td class="rbr"></td><td class="bold">UKUPNO NJEGE</td><td class="num bold">6.494,31</td><td class="num bold">649,43</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="16" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">15</td><td>Kalemljenje maruna</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="17" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">16</td><td>Priprema površine za kalemljenje</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="18" step="0.01" placeholder="—"></td></tr>
+        <tr><td class="roman"></td><td class="rbr">17</td><td>Podsijavanje jele</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="19" step="0.01" placeholder="—"></td></tr>
+        <tr class="section-row"><td class="roman"><span class="cat-badge cat-iv">IV</span></td><td class="rbr"></td><td class="bold">UKUPNO OSTALE NJEGE</td><td class="num bold">0,00</td><td class="num bold">0,00</td><td class="new-cell"><input type="number" class="nova-cell-input" data-ni="20" step="0.01" placeholder="—"></td></tr>
+        <tr class="grand-row"><td colspan="2" style="padding-left:12px;font-weight:700;">V &nbsp;SVEUKUPNO</td><td style="font-weight:700;">I + II + III + IV</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">7.614,19</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">761,42</td><td style="text-align:right;padding-right:8px;"><input type="number" class="nova-cell-input" data-ni="21" step="0.01" placeholder="—" style="background:#fff3e0;border-color:#e76f51;font-weight:700;"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  </div>
+
+  <!-- INNER TAB: PRIPREMA TERENA -->
+  <div id="nova-priprema" class="inner-tab-panel">
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#f4a261;">I</span><h2>Priprema terena za pošumljavanje – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr>
+        <th>Gospodarska jedinica</th><th>Odjel</th><th>Odsjek</th><th>Gazd. klasa</th>
+        <th class="r">Površina 2026 (ha)</th>
+        <th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th>
+      </tr></thead>
+      <tbody>
+        <tr><td>Risovac-Krupa</td><td>85</td><td>2</td><td>6103</td><td class="r">2,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="22" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4" class="bold">UKUPNO</td><td class="r bold">2,00</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  </div>
+
+  <!-- INNER TAB: POŠUMLJAVANJE -->
+  <div id="nova-posumljavanje" class="inner-tab-panel">
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#2d6a4f;">II-3</span><h2>Pošumljavanje unutar visokih šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="sum-table-wrap"><table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Vrsta sadnica</th><th class="r">Gustoća</th><th class="r">Površ. 2026 (ha)</th><th class="r">Kol. 2026</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Vojskova</td><td>36</td><td>1</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="23" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>36</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="24" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>104</td><td>1</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="25" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>104</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="26" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>105</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="nova-cell-input" data-ni="27" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>36</td><td>4</td><td>Kesten</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="28" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>64</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="29" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>65</td><td>3</td><td>Smrča</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="30" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>2</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="31" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>85</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="nova-cell-input" data-ni="32" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>85</td><td>5</td><td>Javor</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="nova-cell-input" data-ni="33" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>85</td><td>2</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="nova-cell-input" data-ni="34" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="35" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="36" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="37" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="38" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="39" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="40" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="nova-cell-input" data-ni="41" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Bukva</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="nova-cell-input" data-ni="42" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5" class="bold">UKUPNO</td><td class="r bold">21,00</td><td class="r bold">37.800</td><td></td></tr></tfoot>
+    </table></div>
+  </div>
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#2d6a4f;">II-4</span><h2>Pošumljavanje unutar izdanačkih šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Vrsta sadnica</th><th class="r">Gustoća</th><th class="r">Površ. 2026 (ha)</th><th class="r">Kol. 2026</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Baštra-Ćorkovača</td><td>3</td><td>4</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="nova-cell-input" data-ni="43" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>27</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="nova-cell-input" data-ni="44" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>27</td><td>1</td><td>Kesten</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="nova-cell-input" data-ni="45" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5" class="bold">UKUPNO</td><td class="r bold">4,00</td><td class="r bold">7.200</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#2d6a4f;">II-5</span><h2>Pošumljavanje goleti i šibljaka – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Vrsta sadnica</th><th class="r">Gustoća</th><th class="r">Površ. 2026 (ha)</th><th class="r">Kol. 2026</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">4,00</td><td class="r">7.200</td><td class="r"><input type="number" class="nova-cell-input" data-ni="46" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>Kesten</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="nova-cell-input" data-ni="47" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5" class="bold">UKUPNO</td><td class="r bold">5,00</td><td class="r bold">9.000</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  </div>
+
+  <!-- INNER TAB: NJEGE -->
+  <div id="nova-njege" class="inner-tab-panel">
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#40916c;">III-8</span><h2>Njega kultura (prorede) – kresanje – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Gazd. klasa</th><th class="r">Površ. 2026 (ha)</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Risovac-Krupa</td><td>13</td><td>2</td><td>3201</td><td class="r">18,80</td><td class="r"><input type="number" class="nova-cell-input" data-ni="48" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>13</td><td>3</td><td>3201</td><td class="r">1,30</td><td class="r"><input type="number" class="nova-cell-input" data-ni="49" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>35</td><td>3</td><td>3202</td><td class="r">7,90</td><td class="r"><input type="number" class="nova-cell-input" data-ni="50" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>2</td><td>3202</td><td class="r">5,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="51" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>3202</td><td class="r">1,70</td><td class="r"><input type="number" class="nova-cell-input" data-ni="52" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>4</td><td>3202</td><td class="r">0,40</td><td class="r"><input type="number" class="nova-cell-input" data-ni="53" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>5</td><td>3208</td><td class="r">9,30</td><td class="r"><input type="number" class="nova-cell-input" data-ni="54" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>64/2p</td><td>2</td><td>3201</td><td class="r">9,20</td><td class="r"><input type="number" class="nova-cell-input" data-ni="55" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>64/2p</td><td>3</td><td>3201</td><td class="r">0,50</td><td class="r"><input type="number" class="nova-cell-input" data-ni="56" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>85p</td><td>1</td><td>3208</td><td class="r">9,60</td><td class="r"><input type="number" class="nova-cell-input" data-ni="57" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4" class="bold">UKUPNO</td><td class="r bold">63,70</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#40916c;">III-9</span><h2>Njega šumskih kultura ispod taks. praga – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Gazd. klasa</th><th class="r">Površ. 2026 (ha)</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Grmeč-Jasenica</td><td>58</td><td>2</td><td>3201</td><td class="r">0,20</td><td class="r"><input type="number" class="nova-cell-input" data-ni="58" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>65</td><td>3</td><td>3202</td><td class="r">1,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="59" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>2</td><td>3202</td><td class="r">1,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="60" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>113</td><td>5</td><td>3101</td><td class="r">1,60</td><td class="r"><input type="number" class="nova-cell-input" data-ni="61" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>20</td><td>6</td><td>4104</td><td class="r">1,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="62" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>108</td><td>5</td><td>6404</td><td class="r">4,50</td><td class="r"><input type="number" class="nova-cell-input" data-ni="63" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>1</td><td>4</td><td>6404</td><td class="r">16,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="64" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>26</td><td>4</td><td>6101</td><td class="r">3,90</td><td class="r"><input type="number" class="nova-cell-input" data-ni="65" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>6401</td><td class="r">0,80</td><td class="r"><input type="number" class="nova-cell-input" data-ni="66" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4" class="bold">UKUPNO</td><td class="r bold">30,00</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#40916c;">III-10</span><h2>Njega izdanačkih šuma – Melioracije – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Gazd. klasa</th><th class="r">Površ. 2026 (ha)</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Grmeč-Jasenica</td><td>4</td><td>2</td><td>4119</td><td class="r">50,50</td><td class="r"><input type="number" class="nova-cell-input" data-ni="67" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>66</td><td>2</td><td>4115</td><td class="r">68,20</td><td class="r"><input type="number" class="nova-cell-input" data-ni="68" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>85p</td><td>2</td><td>4107</td><td class="r">80,40</td><td class="r"><input type="number" class="nova-cell-input" data-ni="69" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Grmeč-Jasenica</td><td>88p</td><td>8</td><td>4107</td><td class="r">50,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="70" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>66</td><td>3</td><td>4412</td><td class="r">26,40</td><td class="r"><input type="number" class="nova-cell-input" data-ni="71" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Risovac-Krupa</td><td>113p</td><td>1</td><td>4115</td><td class="r">5,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="72" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>15</td><td>1</td><td>4111</td><td class="r">32,70</td><td class="r"><input type="number" class="nova-cell-input" data-ni="73" step="0.01" placeholder="—"></td></tr>
+        <tr><td>Vojskova</td><td>25</td><td>1</td><td>4112</td><td class="r">41,60</td><td class="r"><input type="number" class="nova-cell-input" data-ni="74" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4" class="bold">UKUPNO</td><td class="r bold">354,80</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#40916c;">III-13</span><h2>Njega prirodnog podmlatka – unos <span class="nova-year-lbl">—</span></h2></div>
+    <table class="detail-table">
+      <thead><tr><th>GJ</th><th>Odjel</th><th>Ods.</th><th>Gazd. klasa</th><th class="r">Površ. 2026 (ha)</th><th class="r" style="background:#fff3e0;color:#c05621;">Unos <span class="nova-year-lbl">—</span> (ha)</th></tr></thead>
+      <tbody>
+        <tr><td>Baštra-Ćorkovača</td><td>13</td><td>3</td><td>4413</td><td class="r">5,00</td><td class="r"><input type="number" class="nova-cell-input" data-ni="75" step="0.01" placeholder="—"></td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="4" class="bold">UKUPNO</td><td class="r bold">5,00</td><td></td></tr></tfoot>
+    </table>
+  </div>
+  </div>
+
+</div><!-- end tab-novagod -->
 
 <script>
 const DEFAULT_YEAR = new Date().getFullYear() + 1;
@@ -784,10 +983,9 @@ function init() {
   updateProgress();
   // Assign data-ni indices to all .new-val spans
   document.querySelectorAll('.new-val').forEach((s, i) => s.setAttribute('data-ni', i));
-  buildNovaForm();
   renderNewVals();
   document.addEventListener('input', e => {
-    if (e.target.classList.contains('new-input') && !e.target.classList.contains('nova-input')) saveData();
+    if (e.target.classList.contains('new-input')) saveData();
   });
 }
 
@@ -811,6 +1009,10 @@ function loadData() {
     if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
   });
   renderNewVals();
+  document.querySelectorAll('.nova-cell-input').forEach(inp => {
+    const i = inp.getAttribute('data-ni');
+    if (data['ni' + i] !== undefined) inp.value = data['ni' + i];
+  });
 }
 
 function switchTab(name, btn) {
@@ -825,13 +1027,22 @@ function updateYearLabel(doLoad = true) {
   document.getElementById('newYearPill').textContent = '✎ ' + y;
   document.getElementById('legendYear').textContent = y;
   document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
+  document.querySelectorAll('.nova-year-lbl').forEach(el => el.textContent = y);
+  document.getElementById('nova-year-display').textContent = y;
   if (doLoad) {
     document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.nova-cell-input').forEach(inp => inp.value = '');
     loadData();
     updateProgress();
-    buildNovaForm();
     renderNewVals();
   }
+}
+
+function switchInnerTab(name) {
+  document.querySelectorAll('.inner-tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nova-' + name).classList.add('active');
+  event.target.classList.add('active');
 }
 
 function updateProgress() {
@@ -865,106 +1076,26 @@ function renderNewVals() {
   });
 }
 
-function buildNovaForm() {
-  const container = document.getElementById('nova-form-container');
-  if (!container) return;
-  const y = document.getElementById('newYear').value;
-  document.getElementById('nova-year-display').textContent = y;
-
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem(getStorageKey()) || '{}'); } catch(e) {}
-
-  let html = '';
-
-  const sections = document.querySelectorAll('.tab-panel:not(#tab-novagod) .section');
-  sections.forEach(section => {
-    const sectionTitle = section.querySelector('h2')?.textContent || '';
-    const rows = section.querySelectorAll('tbody tr:not(:last-child)');
-    if (!rows.length) return;
-
-    let sectionHasInputs = false;
-    rows.forEach(row => {
-      if (row.querySelectorAll('.new-val').length > 0) sectionHasInputs = true;
-    });
-    if (!sectionHasInputs) return;
-
-    html += `<div style="margin-bottom:20px;background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;">`;
-    html += `<div style="background:var(--green-dark);color:white;padding:8px 16px;font-size:12px;font-weight:700;">${sectionTitle}</div>`;
-    html += `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">`;
-    html += `<thead><tr style="background:var(--green-pale);"><th style="padding:6px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Odjel/Ods.</th>`;
-    html += `<th style="padding:6px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Površina (ha)</th>`;
-    html += `</tr></thead><tbody>`;
-
-    rows.forEach(row => {
-      const newVals = row.querySelectorAll('.new-val');
-      if (!newVals.length) return;
-
-      const tds = row.querySelectorAll('td');
-      let label = '';
-      for (let i = 1; i < Math.min(tds.length, 5); i++) {
-        const t = tds[i]?.textContent?.trim();
-        if (t && t !== '—') label += (label ? ' / ' : '') + t;
-      }
-
-      html += `<tr style="border-bottom:1px solid var(--gray1);">`;
-      html += `<td style="padding:5px 10px;font-family:'IBM Plex Mono',monospace;">${label}</td>`;
-
-      newVals.forEach(span => {
-        const idx = parseInt(span.getAttribute('data-ni'));
-        const savedVal = saved['ni' + idx] || '';
-        html += `<td style="padding:5px 10px;text-align:right;">`;
-        html += `<input type="number" class="nova-input new-input" data-target-ni="${idx}" value="${savedVal}" placeholder="—" step="0.01"
-          style="width:90px;border:1.5px solid #f4a261;border-radius:3px;padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:#fff8ee;color:#8b4500;text-align:right;"
-          oninput="novaInputChange(this)">`;
-        html += `</td>`;
-      });
-
-      html += `</tr>`;
-    });
-
-    html += `</tbody></table></div></div>`;
-  });
-
-  container.innerHTML = html || '<p style="color:#888;padding:20px;">Nema redova za unos.</p>';
-}
-
-function novaInputChange(input) {
-  const idx = input.getAttribute('data-target-ni');
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  data['ni' + idx] = input.value;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
-}
-
 function confirmData() {
   const key = getStorageKey();
   let data = {};
   try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  document.querySelectorAll('.nova-input').forEach(inp => {
-    const idx = inp.getAttribute('data-target-ni');
-    data['ni' + idx] = inp.value;
+  document.querySelectorAll('.nova-cell-input').forEach(inp => {
+    data['ni' + inp.getAttribute('data-ni')] = inp.value;
   });
   try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
   renderNewVals();
-  const firstTabBtn = document.querySelector('.tab-btn:not(.nova-tab-btn)');
-  const firstTabPanel = document.querySelector('.tab-panel:not(#tab-novagod)');
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  if (firstTabBtn) firstTabBtn.classList.add('active');
-  if (firstTabPanel) firstTabPanel.classList.add('active');
-  const btn = event.target;
-  const orig = btn.textContent;
-  btn.textContent = '✓ Sačuvano!';
-  btn.style.background = '#27ae60';
-  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
+  document.querySelector('.tab-btn:not(.nova-tab-btn)').classList.add('active');
+  document.querySelector('.tab-panel:not(#tab-novagod)').classList.add('active');
 }
 
 function clearNovaData() {
   if (!confirm('Obrisati sve unesene podatke za ovu godinu?')) return;
   const key = getStorageKey();
   try { localStorage.removeItem(key); } catch(e) {}
-  document.querySelectorAll('.nova-input').forEach(inp => inp.value = '');
+  document.querySelectorAll('.nova-cell-input').forEach(inp => inp.value = '');
   renderNewVals();
 }
 

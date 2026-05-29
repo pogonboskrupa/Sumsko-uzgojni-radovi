@@ -362,6 +362,15 @@
   .tab-btn:hover:not(.active) { background: var(--green-pale); color: var(--green-dark); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
+
+  /* inner tabs for Nova Godina */
+  .inner-tab-bar { display:flex; gap:4px; padding:0 16px 0; border-bottom:2px solid #f4a261; margin-bottom:0; }
+  .inner-tab-btn { padding:6px 14px; background:var(--gray1); border:none; border-radius:5px 5px 0 0; font-family:inherit; font-size:11px; font-weight:600; color:var(--gray3); cursor:pointer; }
+  .inner-tab-btn.active { background:#f4a261; color:white; }
+  .inner-tab-panel { display:none; }
+  .inner-tab-panel.active { display:block; }
+  .nova-cell-input { width:80px; border:1.5px solid #f4a261; border-radius:3px; padding:2px 5px; font-family:'IBM Plex Mono',monospace; font-size:11px; background:#fff8ee; color:#8b4500; text-align:right; }
+  .nova-cell-input:focus { outline:none; border-color:#c05621; background:#fff; }
 </style>
 </head>
 <body>
@@ -800,14 +809,181 @@
 </div><!-- end tab-izdanacka -->
 
 <div id="tab-novagod" class="tab-panel">
-  <div style="padding:16px 16px 8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+  <!-- header bar -->
+  <div style="padding:14px 16px 10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:white;border-bottom:1px solid var(--gray1);">
     <span style="font-size:13px;font-weight:700;color:var(--green-dark);">Unos podataka za godinu:</span>
     <span id="nova-year-display" style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:#c05621;">—</span>
-    <button class="btn btn-accent" onclick="confirmData()" style="margin-left:auto;">✓ Potvrdi i prikaži u tabelama</button>
-    <button class="btn btn-outline btn-sm" onclick="clearNovaData()">✗ Obriši unos</button>
+    <button class="btn btn-accent no-print" onclick="confirmData()" style="margin-left:auto;">✓ Potvrdi i prikaži u tabelama</button>
+    <button class="btn btn-outline btn-sm no-print" onclick="clearNovaData()">✗ Obriši unos</button>
   </div>
-  <div id="nova-form-container" style="padding:0 16px 32px;"></div>
-</div>
+  <!-- inner tab bar -->
+  <div class="inner-tab-bar no-print">
+    <button class="inner-tab-btn active" onclick="switchInnerTab('visoka')">9.3 Visoka Šuma</button>
+    <button class="inner-tab-btn" onclick="switchInnerTab('izdanacka')">9.4 Izdanačka Šuma</button>
+  </div>
+
+  <!-- INNER TAB: VISOKA ŠUMA -->
+  <div id="nova-visoka" class="inner-tab-panel active">
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge">GJ</span><h2>RISOVAC-KRUPA – Visoka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">13</td><td class="td-center">1</td><td class="td-center">1116</td><td>49,7</td><td>2.700</td><td>2.315</td><td><input type="number" class="nova-cell-input" data-ni="0" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="1" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">13</td><td class="td-center">2</td><td class="td-center">3201</td><td>18,8</td><td>544</td><td>453</td><td><input type="number" class="nova-cell-input" data-ni="2" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="3" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">13</td><td class="td-center">3</td><td class="td-center">3201</td><td>1,3</td><td>0</td><td>0</td><td><input type="number" class="nova-cell-input" data-ni="4" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="5" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">35</td><td class="td-center">1</td><td class="td-center">1202</td><td>12,2</td><td>661</td><td>575</td><td><input type="number" class="nova-cell-input" data-ni="6" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="7" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">35</td><td class="td-center">2</td><td class="td-center">1117</td><td>78,8</td><td>4.477</td><td>3.857</td><td><input type="number" class="nova-cell-input" data-ni="8" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="9" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">35</td><td class="td-center">3</td><td class="td-center">3202</td><td>7,9</td><td>279</td><td>216</td><td><input type="number" class="nova-cell-input" data-ni="10" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="11" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">50</td><td class="td-center">—</td><td class="td-center">1202</td><td>76,6</td><td>5.161</td><td>4.329</td><td><input type="number" class="nova-cell-input" data-ni="12" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="13" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">54 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>22,9</td><td>1.511</td><td>1.276</td><td><input type="number" class="nova-cell-input" data-ni="14" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="15" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">55</td><td class="td-center">—</td><td class="td-center">1202</td><td>63,7</td><td>5.195</td><td>4.258</td><td><input type="number" class="nova-cell-input" data-ni="16" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="17" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">56</td><td class="td-center">—</td><td class="td-center">1202</td><td>48,8</td><td>3.877</td><td>3.206</td><td><input type="number" class="nova-cell-input" data-ni="18" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="19" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">59/1</td><td class="td-center">—</td><td class="td-center">1202</td><td>43,1</td><td>3.724</td><td>3.087</td><td><input type="number" class="nova-cell-input" data-ni="20" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="21" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">63</td><td class="td-center">—</td><td class="td-center">1202</td><td>52,2</td><td>4.033</td><td>3.339</td><td><input type="number" class="nova-cell-input" data-ni="22" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="23" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>47,0</td><td>2.335</td><td>2.048</td><td><input type="number" class="nova-cell-input" data-ni="24" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="25" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">3202</td><td>5,0</td><td>30</td><td>25</td><td><input type="number" class="nova-cell-input" data-ni="26" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="27" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">3</td><td class="td-center">3202</td><td>1,7</td><td>10</td><td>8</td><td><input type="number" class="nova-cell-input" data-ni="28" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="29" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">4</td><td class="td-center">3202</td><td>0,4</td><td>4</td><td>3</td><td><input type="number" class="nova-cell-input" data-ni="30" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="31" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">5</td><td class="td-center">3208</td><td>9,3</td><td>50</td><td>43</td><td><input type="number" class="nova-cell-input" data-ni="32" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="33" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">68/2</td><td class="td-center">1</td><td class="td-center">1202</td><td>8,6</td><td>526</td><td>460</td><td><input type="number" class="nova-cell-input" data-ni="34" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="35" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">68/2</td><td class="td-center">2</td><td class="td-center">1117</td><td>38,4</td><td>2.079</td><td>1.827</td><td><input type="number" class="nova-cell-input" data-ni="36" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="37" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">71 P</td><td class="td-center">1</td><td class="td-center">1202</td><td>29,0</td><td>1.835</td><td>1.551</td><td><input type="number" class="nova-cell-input" data-ni="38" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="39" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">71 P</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,9</td><td>122</td><td>104</td><td><input type="number" class="nova-cell-input" data-ni="40" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="41" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">97</td><td class="td-center">1</td><td class="td-center">1202</td><td>58,8</td><td>3.962</td><td>3.272</td><td><input type="number" class="nova-cell-input" data-ni="42" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="43" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">97</td><td class="td-center">2</td><td class="td-center">1117</td><td>16,2</td><td>927</td><td>786</td><td><input type="number" class="nova-cell-input" data-ni="44" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="45" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">113 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>11,9</td><td>449</td><td>383</td><td><input type="number" class="nova-cell-input" data-ni="46" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="47" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">113 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>55,0</td><td>4.092</td><td>3.472</td><td><input type="number" class="nova-cell-input" data-ni="48" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="49" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „RISOVAC-KRUPA"</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge">GJ</span><h2>GRMEČ-JASENICA – Visoka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">4/1</td><td class="td-center">1</td><td class="td-center">1116</td><td>20,7</td><td>1.196</td><td>1.017</td><td><input type="number" class="nova-cell-input" data-ni="50" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="51" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">11 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>1,2</td><td>110</td><td>95</td><td><input type="number" class="nova-cell-input" data-ni="52" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="53" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">11 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,8</td><td>98</td><td>84</td><td><input type="number" class="nova-cell-input" data-ni="54" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="55" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">43 p</td><td class="td-center">—</td><td class="td-center">1211</td><td>30,2</td><td>1.099</td><td>740</td><td><input type="number" class="nova-cell-input" data-ni="56" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="57" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">60</td><td class="td-center">—</td><td class="td-center">1201</td><td>49,0</td><td>3.551</td><td>3.061</td><td><input type="number" class="nova-cell-input" data-ni="58" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="59" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">61</td><td class="td-center">—</td><td class="td-center">1202</td><td>87,3</td><td>4.774</td><td>4.105</td><td><input type="number" class="nova-cell-input" data-ni="60" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="61" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">64/2 p</td><td class="td-center">1</td><td class="td-center">1117</td><td>10,0</td><td>780</td><td>430</td><td><input type="number" class="nova-cell-input" data-ni="62" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="63" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">64/2 p</td><td class="td-center">2</td><td class="td-center">3201</td><td>9,2</td><td>189</td><td>157</td><td><input type="number" class="nova-cell-input" data-ni="64" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="65" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">64/2 p</td><td class="td-center">3</td><td class="td-center">3201</td><td>0,5</td><td>27</td><td>21</td><td><input type="number" class="nova-cell-input" data-ni="66" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="67" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>68,7</td><td>3.975</td><td>3.334</td><td><input type="number" class="nova-cell-input" data-ni="68" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="69" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">67</td><td class="td-center">1</td><td class="td-center">1117</td><td>71,6</td><td>4.113</td><td>3.558</td><td><input type="number" class="nova-cell-input" data-ni="70" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="71" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">67</td><td class="td-center">2</td><td class="td-center">1116</td><td>11,0</td><td>740</td><td>641</td><td><input type="number" class="nova-cell-input" data-ni="72" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="73" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">69 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>25,8</td><td>1.309</td><td>1.204</td><td><input type="number" class="nova-cell-input" data-ni="74" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="75" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">85 p</td><td class="td-center">1</td><td class="td-center">3208</td><td>9,6</td><td>190</td><td>90</td><td><input type="number" class="nova-cell-input" data-ni="76" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="77" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „GRMEČ-JASENICA"</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge">GJ</span><h2>GOMILA – Visoka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">21 p</td><td class="td-center">1</td><td class="td-center">1101</td><td>10,0</td><td>640</td><td>500</td><td><input type="number" class="nova-cell-input" data-ni="78" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="79" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">21 p</td><td class="td-center">2</td><td class="td-center">1102</td><td>3,0</td><td>147</td><td>124</td><td><input type="number" class="nova-cell-input" data-ni="80" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="81" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „GOMILA"</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  </div><!-- end nova-visoka -->
+
+  <!-- INNER TAB: IZDANAČKA ŠUMA -->
+  <div id="nova-izdanacka" class="inner-tab-panel">
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#f4a261;color:#fff">IZD</span><h2>RISOVAC-KRUPA – Izdanačka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">66</td><td class="td-center">8</td><td class="td-center">4412</td><td>26,4</td><td>216</td><td>180</td><td><input type="number" class="nova-cell-input" data-ni="82" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="83" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">113 p</td><td class="td-center">3</td><td class="td-center">4115</td><td>5,0</td><td>636</td><td>445</td><td><input type="number" class="nova-cell-input" data-ni="84" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="85" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „RISOVAC-KRUPA" (izd.)</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#f4a261;color:#fff">IZD</span><h2>GRMEČ-JASENICA – Izdanačka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">4/1</td><td class="td-center">2</td><td class="td-center">4119</td><td>50,5</td><td>1.294</td><td>1.100</td><td><input type="number" class="nova-cell-input" data-ni="86" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="87" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">4115</td><td>68,2</td><td>1.364</td><td>1.159</td><td><input type="number" class="nova-cell-input" data-ni="88" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="89" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">85 p</td><td class="td-center">2</td><td class="td-center">4107</td><td>80,4</td><td>488</td><td>328</td><td><input type="number" class="nova-cell-input" data-ni="90" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="91" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">88 p</td><td class="td-center">—</td><td class="td-center">4107</td><td>50,0</td><td>1.805</td><td>1.200</td><td><input type="number" class="nova-cell-input" data-ni="92" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="93" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „GRMEČ-JASENICA" (izd.)</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="section" style="margin:16px;">
+    <div class="section-head"><span class="badge" style="background:#f4a261;color:#fff">IZD</span><h2>VOJSKOVA – Izdanačka Šuma – unos <span class="nova-year-lbl">—</span></h2></div>
+    <div class="tbl-wrap"><table style="min-width:600px;">
+      <thead>
+        <tr>
+          <th>Odjel</th><th>Ods.</th><th>G.Kl.</th><th>ha</th>
+          <th>Bruto 2026 (m³)</th><th>Neto 2026 (m³)</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Bruto</th>
+          <th style="background:#f4a261;color:#fff">Unos <span class="nova-year-lbl">—</span> Neto</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="td-center">15</td><td class="td-center">1</td><td class="td-center">4111</td><td>32,7</td><td>450</td><td>383</td><td><input type="number" class="nova-cell-input" data-ni="94" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="95" step="1" placeholder="—"></td></tr>
+        <tr><td class="td-center">25</td><td class="td-center">1</td><td class="td-center">4112</td><td>41,6</td><td>750</td><td>637</td><td><input type="number" class="nova-cell-input" data-ni="96" step="1" placeholder="—"></td><td><input type="number" class="nova-cell-input" data-ni="97" step="1" placeholder="—"></td></tr>
+        <tr><td colspan="6" class="td-total td-left" style="font-family:'IBM Plex Sans',sans-serif;padding-left:10px;">UKUPNO G.J. „VOJSKOVA" (izd.)</td><td class="td-total"></td><td class="td-total"></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  </div><!-- end nova-izdanacka -->
+
+</div><!-- end tab-novagod -->
 
 <script>
 const DEFAULT_YEAR = new Date().getFullYear() + 1;
@@ -820,11 +996,9 @@ function init() {
   updateProgress();
   // Assign data-ni indices to all .new-val spans
   document.querySelectorAll('.new-val').forEach((s, i) => s.setAttribute('data-ni', i));
-  buildNovaForm();
   renderNewVals();
-  // save on any new-input change
   document.addEventListener('input', e => {
-    if (e.target.classList.contains('new-input') && !e.target.classList.contains('nova-input')) saveData();
+    if (e.target.classList.contains('new-input')) saveData();
   });
 }
 
@@ -848,6 +1022,10 @@ function loadData() {
     if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
   });
   renderNewVals();
+  document.querySelectorAll('.nova-cell-input').forEach(inp => {
+    const i = inp.getAttribute('data-ni');
+    if (data['ni' + i] !== undefined) inp.value = data['ni' + i];
+  });
 }
 
 function switchTab(name) {
@@ -862,14 +1040,23 @@ function updateYearLabel(doLoad = true) {
   document.getElementById('newYearPill').textContent = '✎ ' + y;
   document.getElementById('legendYear').textContent = y;
   document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
+  document.querySelectorAll('.nova-year-lbl').forEach(el => el.textContent = y);
+  document.getElementById('nova-year-display').textContent = y;
   document.querySelectorAll('[id^=newYearH1]').forEach(el => el.textContent = y + ' – Unos');
   if (doLoad) {
     document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    document.querySelectorAll('.nova-cell-input').forEach(inp => inp.value = '');
     loadData();
     updateProgress();
-    buildNovaForm();
     renderNewVals();
   }
+}
+
+function switchInnerTab(name) {
+  document.querySelectorAll('.inner-tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.inner-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('nova-' + name).classList.add('active');
+  event.target.classList.add('active');
 }
 
 function updateProgress() {
@@ -932,106 +1119,26 @@ function renderNewVals() {
   });
 }
 
-function buildNovaForm() {
-  const container = document.getElementById('nova-form-container');
-  if (!container) return;
-  const y = document.getElementById('newYear').value;
-  document.getElementById('nova-year-display').textContent = y;
-
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem(getStorageKey()) || '{}'); } catch(e) {}
-
-  let html = '';
-
-  const sections = document.querySelectorAll('.tab-panel:not(#tab-novagod) .section');
-  sections.forEach(section => {
-    const sectionTitle = section.querySelector('h2')?.textContent || '';
-    const rows = section.querySelectorAll('tbody tr:not(:last-child)');
-    if (!rows.length) return;
-
-    let sectionHasInputs = false;
-    rows.forEach(row => {
-      if (row.querySelectorAll('.new-val').length > 0) sectionHasInputs = true;
-    });
-    if (!sectionHasInputs) return;
-
-    html += `<div style="margin-bottom:20px;background:white;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.07);overflow:hidden;">`;
-    html += `<div style="background:var(--green-dark);color:white;padding:8px 16px;font-size:12px;font-weight:700;">${sectionTitle}</div>`;
-    html += `<div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;font-size:12px;">`;
-    html += `<thead><tr style="background:var(--green-pale);"><th style="padding:6px 10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Odjel/Ods.</th>`;
-    html += `<th style="padding:6px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Bruto (m³)</th><th style="padding:6px 10px;text-align:right;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--green-dark);">Neto (m³)</th>`;
-    html += `</tr></thead><tbody>`;
-
-    rows.forEach(row => {
-      const newVals = row.querySelectorAll('.new-val');
-      if (!newVals.length) return;
-
-      const tds = row.querySelectorAll('td');
-      let label = '';
-      for (let i = 1; i < Math.min(tds.length, 5); i++) {
-        const t = tds[i]?.textContent?.trim();
-        if (t && t !== '—') label += (label ? ' / ' : '') + t;
-      }
-
-      html += `<tr style="border-bottom:1px solid var(--gray1);">`;
-      html += `<td style="padding:5px 10px;font-family:'IBM Plex Mono',monospace;">${label}</td>`;
-
-      newVals.forEach(span => {
-        const idx = parseInt(span.getAttribute('data-ni'));
-        const savedVal = saved['ni' + idx] || '';
-        html += `<td style="padding:5px 10px;text-align:right;">`;
-        html += `<input type="number" class="nova-input new-input" data-target-ni="${idx}" value="${savedVal}" placeholder="—" step="0.01"
-          style="width:90px;border:1.5px solid #f4a261;border-radius:3px;padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:12px;background:#fff8ee;color:#8b4500;text-align:right;"
-          oninput="novaInputChange(this)">`;
-        html += `</td>`;
-      });
-
-      html += `</tr>`;
-    });
-
-    html += `</tbody></table></div></div>`;
-  });
-
-  container.innerHTML = html || '<p style="color:#888;padding:20px;">Nema redova za unos.</p>';
-}
-
-function novaInputChange(input) {
-  const idx = input.getAttribute('data-target-ni');
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  data['ni' + idx] = input.value;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
-}
-
 function confirmData() {
   const key = getStorageKey();
   let data = {};
   try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  document.querySelectorAll('.nova-input').forEach(inp => {
-    const idx = inp.getAttribute('data-target-ni');
-    data['ni' + idx] = inp.value;
+  document.querySelectorAll('.nova-cell-input').forEach(inp => {
+    data['ni' + inp.getAttribute('data-ni')] = inp.value;
   });
   try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
   renderNewVals();
-  const firstTabBtn = document.querySelector('.tab-btn:not(.nova-tab-btn)');
-  const firstTabPanel = document.querySelector('.tab-panel:not(#tab-novagod)');
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  if (firstTabBtn) firstTabBtn.classList.add('active');
-  if (firstTabPanel) firstTabPanel.classList.add('active');
-  const btn = event.target;
-  const orig = btn.textContent;
-  btn.textContent = '✓ Sačuvano!';
-  btn.style.background = '#27ae60';
-  setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
+  document.querySelector('.tab-btn:not(.nova-tab-btn)').classList.add('active');
+  document.querySelector('.tab-panel:not(#tab-novagod)').classList.add('active');
 }
 
 function clearNovaData() {
   if (!confirm('Obrisati sve unesene podatke za ovu godinu?')) return;
   const key = getStorageKey();
   try { localStorage.removeItem(key); } catch(e) {}
-  document.querySelectorAll('.nova-input').forEach(inp => inp.value = '');
+  document.querySelectorAll('.nova-cell-input').forEach(inp => inp.value = '');
   renderNewVals();
 }
 
