@@ -332,6 +332,7 @@
     }
   }
 </style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -347,6 +348,7 @@
     <button class="btn btn-outline btn-sm" onclick="checkAll(false)">✗ Odčekiraj</button>
     <button class="btn btn-primary" onclick="saveToFile()">💾 Sačuvaj</button>
     <label class="btn btn-primary" style="cursor:pointer;">📂 Učitaj<input type="file" accept=".json" onchange="loadFromFile(event)" style="display:none"></label>
+    <button class="btn btn-primary" onclick="exportXLSX()">📊 Excel / Sheets</button>
     <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
   </div>
 </div>
@@ -1218,6 +1220,59 @@ function updateProgress() {
 function checkAll(state) {
   document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = state);
   updateProgress();
+}
+
+function exportXLSX() {
+  const y = document.getElementById('newYear').value;
+  const wb = XLSX.utils.book_new();
+
+  // ── Sheet: Zbirna tabela ────────────────────────────────────
+  const zbirHeader = ['Kat.','R.br.','Vrsta radova','Plan 10 god. (ha)','Godiš. ŠGO (ha)', y + ' (ha)'];
+  const zbirData = [zbirHeader];
+  const data = _state;
+  ZBIR_ROWS.forEach((r, i) => {
+    const val = data.zbir && data.zbir[i] ? parseFloat(data.zbir[i]) || data.zbir[i] : '';
+    zbirData.push([r.cat, r.rbr, r.label, r.p10, r.pgso, val]);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(zbirData), 'Zbirna tabela');
+
+  // ── Sheet po sekciji iz referentnog plana ──────────────────
+  const refSections = {
+    'Njege kulture': {badge:'III-8/9', sel:'#tab-njege .section:nth-child(1)'},
+    'Melioracije':   {badge:'III-10',  sel:'#tab-njege .section:nth-child(2)'},
+    'Podmladak':     {badge:'III-13',  sel:'#tab-njege .section:nth-child(3)'},
+  };
+  document.querySelectorAll('#tab-priprema .detail-table, #tab-posumljavanje .detail-table, #tab-njege .detail-table').forEach((tbl, ti) => {
+    const heading = tbl.closest('.section')?.querySelector('h2')?.textContent?.trim() || ('Tabela ' + (ti+1));
+    const rows = [];
+    tbl.querySelectorAll('thead tr').forEach(tr => {
+      rows.push(Array.from(tr.querySelectorAll('th')).map(th => th.textContent.trim()));
+    });
+    tbl.querySelectorAll('tbody tr').forEach(tr => {
+      const cb = tr.querySelector('input[type=checkbox]');
+      const cells = Array.from(tr.querySelectorAll('td')).filter(td => !td.classList.contains('check-td')).map(td => td.textContent.trim());
+      if (cells.length) rows.push(cb ? [...cells, cb.checked ? 'DA' : 'NE'] : cells);
+    });
+    if (rows.length > 1) XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(rows), heading.slice(0, 31));
+  });
+
+  // ── Sheet: Plan nova godina ─────────────────────────────────
+  if (data.rows) {
+    const sectionLabels = {priprema:'I – Priprema', posumljavanje:'II – Pošumljavanje', njege_kulture:'III – Njege kultura', melioracije:'III – Melioracije', podmladak:'III – Podmladak'};
+    Object.keys(SECTION_CONFIGS).forEach(section => {
+      const rows = data.rows[section];
+      if (!rows || !rows.length) return;
+      const cfg = SECTION_CONFIGS[section];
+      const header = cfg.fields.map(f => f.label);
+      const sheetData = [header, ...rows.map(row => cfg.fields.map(f => {
+        const v = row[f.key];
+        return f.type === 'number' ? (parseFloat(v) || v || '') : (v || '');
+      }))];
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(sheetData), (y + ' ' + sectionLabels[section]).slice(0, 31));
+    });
+  }
+
+  XLSX.writeFile(wb, 'uzgojni_krupa_' + y + '.xlsx');
 }
 
 init();

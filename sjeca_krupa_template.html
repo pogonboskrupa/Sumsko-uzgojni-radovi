@@ -371,6 +371,7 @@
   .nova-cell-input { width:80px; border:1.5px solid #f4a261; border-radius:3px; padding:2px 5px; font-family:'IBM Plex Mono',monospace; font-size:11px; background:#fff8ee; color:#8b4500; text-align:right; }
   .nova-cell-input:focus { outline:none; border-color:#c05621; background:#fff; }
 </style>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -387,6 +388,7 @@
     <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
     <button class="btn btn-primary" onclick="saveToFile()">💾 Sačuvaj</button>
     <label class="btn btn-primary" style="cursor:pointer;">📂 Učitaj<input type="file" accept=".json" onchange="loadFromFile(event)" style="display:none"></label>
+    <button class="btn btn-primary" onclick="exportXLSX()">📊 Excel / Sheets</button>
     <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
   </div>
 </div>
@@ -1119,6 +1121,45 @@ function exportCSV() {
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = 'sjeca_krupa_' + y + '.csv';
   a.click();
+}
+
+function exportXLSX() {
+  const y = document.getElementById('newYear').value;
+  const wb = XLSX.utils.book_new();
+
+  // ── Sheet: Referentni plan (iz glavnih tabova) ──────────────
+  const refHeader = ['GJ','Odjel','Ods.','G.Kl.','ha','Bruto (m³)','Neto (m³)',
+    'Čet.Bruto','Čet.Neto','Čet.Trup.','Čet.Cjep.',
+    'Liš.Bruto','Liš.Neto','Liš.Trup.','Liš.Cjep.','Izvršeno'];
+  const refRows = [refHeader];
+  document.querySelectorAll('#tab-visoka tbody tr, #tab-izdanacka tbody tr').forEach(row => {
+    const cb = row.querySelector('input[type=checkbox]');
+    const tds = row.querySelectorAll('td');
+    if (!cb || !tds.length) return;
+    const gj = row.closest('.section')?.querySelector('h2')?.textContent?.split(' – ')[0]?.trim() || '';
+    const cells = [gj];
+    for (let i = 1; i <= 14; i++) cells.push(tds[i]?.textContent?.trim().replace(/\./g,'').replace(',','.') || '');
+    cells.push(cb.checked ? 'DA' : 'NE');
+    refRows.push(cells);
+  });
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(refRows), 'Referentni plan');
+
+  // ── Sheet: Nova Godina (uneseni podaci) ─────────────────────
+  const novaHeader = SJECA_FIELDS.map(f => f.label);
+  const novaRows = [['Sekcija', ...novaHeader]];
+  const sectionLabels = {visoka:'9.3 Visoka Šuma', izdanacka:'9.4 Izdanačka Šuma'};
+  const data = _state;
+  ['visoka','izdanacka'].forEach(section => {
+    const rows = data.rows && data.rows[section] ? data.rows[section] : [];
+    rows.forEach(row => {
+      const cells = [sectionLabels[section]];
+      SJECA_FIELDS.forEach(f => cells.push(row[f.key] !== undefined && row[f.key] !== '' ? Number(row[f.key]) || row[f.key] : ''));
+      novaRows.push(cells);
+    });
+  });
+  if (novaRows.length > 1) XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(novaRows), 'Plan ' + y);
+
+  XLSX.writeFile(wb, 'sjeca_krupa_' + y + '.xlsx');
 }
 
 init();
