@@ -4,7 +4,8 @@ const ASSETS = [
   './index.html',
   './sjeca_krupa_template.html',
   './uzgojni_radovi_krupa_template.html',
-  './manifest.json'
+  './manifest.json',
+  './SUR-LOGO.png'
 ];
 
 self.addEventListener('install', e => {
