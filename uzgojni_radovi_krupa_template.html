@@ -345,6 +345,8 @@
   <div class="controls-bar no-print">
     <button class="btn btn-outline btn-sm" onclick="checkAll(true)">✓ Čekiraj sve</button>
     <button class="btn btn-outline btn-sm" onclick="checkAll(false)">✗ Odčekiraj</button>
+    <button class="btn btn-primary" onclick="saveToFile()">💾 Sačuvaj</button>
+    <label class="btn btn-primary" style="cursor:pointer;">📂 Učitaj<input type="file" accept=".json" onchange="loadFromFile(event)" style="display:none"></label>
     <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
   </div>
 </div>
@@ -985,13 +987,9 @@ function init() {
 }
 
 function renderZbir() {
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
   const tbody = document.getElementById('nova-zbir-body');
   if (!tbody) return;
   tbody.innerHTML = ZBIR_ROWS.map((r, i) => {
-    const val = (data.zbir && data.zbir[i] !== undefined) ? data.zbir[i] : '';
     const rowCls = r.isGrand ? 'grand-row' : r.isTotal ? 'section-row' : '';
     const catBadge = r.cat ? `<span class="cat-badge cat-${r.cat.toLowerCase().replace('σ','')}">${r.cat}</span>` : '';
     return `<tr class="${rowCls}">
@@ -1000,21 +998,13 @@ function renderZbir() {
       <td${r.isTotal||r.isGrand?' class="bold"':''}>${r.label}</td>
       <td class="num">${r.p10}</td>
       <td class="num">${r.pgso}</td>
-      <td class="new-cell"><input type="number" class="nova-cell-input" data-zbir="${i}" value="${val}" step="0.01" placeholder="—"
-        style="width:90px;border:1.5px solid #f4a261;border-radius:3px;padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:#fff8ee;color:#8b4500;text-align:right;"
-        oninput="saveZbirCell(this,${i})"></td>
+      <td class="new-cell"><input type="number" class="nova-cell-input" data-zbir="${i}" step="0.01" placeholder="—"
+        style="width:90px;border:1.5px solid #f4a261;border-radius:3px;padding:3px 6px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:#fff8ee;color:#8b4500;text-align:right;"></td>
     </tr>`;
   }).join('');
 }
 
-function saveZbirCell(inp, i) {
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  if (!data.zbir) data.zbir = {};
-  data.zbir[i] = inp.value;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
-}
+function saveZbirCell() { /* values collected on save/confirm */ }
 
 function addRow(section) {
   const cfg = SECTION_CONFIGS[section];
@@ -1068,26 +1058,24 @@ function getRowsData() {
   return rows;
 }
 
-function saveData() {
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => { data['cb' + i] = cb.checked; });
-  data.rows = getRowsData();
-  data.zbir = data.rows.zbir;
-  delete data.rows.zbir;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+// ── IN-MEMORY STATE (ne koristi localStorage) ──────────────────
+let _state = {};
+
+function collectState() {
+  const data = { year: document.getElementById('newYear').value, checkboxes: {}, rows: getRowsData(), zbir: {} };
+  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => { data.checkboxes['cb' + i] = cb.checked; });
+  document.querySelectorAll('input[data-zbir]').forEach(inp => { data.zbir[inp.getAttribute('data-zbir')] = inp.value; });
+  return data;
 }
 
-function loadData() {
-  const key = getStorageKey();
-  let data;
-  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
+function applyState(data) {
   if (!data) { renderZbir(); return; }
-  document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
-    if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
-  });
-  // Load zbir
+  if (data.year) { document.getElementById('newYear').value = data.year; updateYearLabel(false); }
+  if (data.checkboxes) {
+    document.querySelectorAll('input[type=checkbox]').forEach((cb, i) => {
+      if (data.checkboxes['cb' + i] !== undefined) cb.checked = data.checkboxes['cb' + i];
+    });
+  }
   if (data.zbir) {
     renderZbir();
     document.querySelectorAll('input[data-zbir]').forEach(inp => {
@@ -1095,7 +1083,6 @@ function loadData() {
       if (data.zbir[i] !== undefined) inp.value = data.zbir[i];
     });
   } else { renderZbir(); }
-  // Load dynamic rows
   if (data.rows) {
     Object.keys(SECTION_CONFIGS).forEach(section => {
       const tbody = document.getElementById('nova-' + section + '-body');
@@ -1103,8 +1090,7 @@ function loadData() {
       tbody.innerHTML = '';
       data.rows[section].forEach(rowData => {
         addRow(section);
-        const lastTr = tbody.lastElementChild;
-        lastTr.querySelectorAll('input.nova-cell-input').forEach(inp => {
+        tbody.lastElementChild.querySelectorAll('input.nova-cell-input').forEach(inp => {
           const f = inp.getAttribute('data-field');
           if (rowData[f] !== undefined) inp.value = rowData[f];
         });
@@ -1113,33 +1099,54 @@ function loadData() {
   }
 }
 
+function saveData() { _state = collectState(); }
+function loadData() { /* state lives in memory; loaded via file */ }
+
+function saveToFile() {
+  _state = collectState();
+  const y = _state.year || document.getElementById('newYear').value;
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(_state, null, 2));
+  a.download = 'uzgojni_krupa_' + y + '.json';
+  a.click();
+}
+
+function loadFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyState(data);
+      _state = data;
+      updateProgress();
+      alert('Stanje učitano: ' + file.name);
+    } catch(err) { alert('Greška pri učitavanju fajla.'); }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
 function confirmData() {
   saveData();
   const y = document.getElementById('newYear').value;
-  const key = getStorageKey();
-  let data;
-  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
-  
+  const data = _state;
   let html = `<h2 style="font-size:14px;font-weight:700;color:var(--green-dark);margin-bottom:16px;border-bottom:2px solid var(--green-light);padding-bottom:6px;">Plan šumsko-uzgojnih radova – ${y}</h2>`;
-  
-  // Zbirna
   html += `<div class="section" style="margin-bottom:16px;"><div class="section-head"><span class="badge">10.3</span><h2>Zbirna tabela</h2></div>`;
   html += `<div class="sum-table-wrap"><table class="sum-table"><thead><tr><th>Kat.</th><th>R.br.</th><th>Vrsta radova</th><th class="num">Plan 10 god. (ha)</th><th class="num">ŠGO (ha)</th><th class="num" style="background:#fff3e0;color:#c05621;">${y} (ha)</th></tr></thead><tbody>`;
   ZBIR_ROWS.forEach((r, i) => {
-    const val = data && data.zbir && data.zbir[i] ? data.zbir[i] : '—';
+    const val = data.zbir && data.zbir[i] ? data.zbir[i] : '—';
     const rowCls = r.isGrand ? 'grand-row' : r.isTotal ? 'section-row' : '';
     html += `<tr class="${rowCls}"><td class="roman">${r.cat}</td><td class="rbr">${r.rbr}</td><td${r.isTotal||r.isGrand?' class="bold"':''}>${r.label}</td><td class="num">${r.p10}</td><td class="num">${r.pgso}</td><td class="num bold" style="color:#c05621;">${val}</td></tr>`;
   });
   html += `</tbody></table></div></div>`;
-  
-  // Dynamic sections
   const sectionLabels = {priprema:'I – Priprema terena', posumljavanje:'II – Pošumljavanje', njege_kulture:'III – Njege kultura', melioracije:'III – Melioracije', podmladak:'III – Njega podmlatka'};
   Object.keys(SECTION_CONFIGS).forEach(section => {
-    const rows = data && data.rows && data.rows[section] ? data.rows[section] : [];
+    const rows = data.rows && data.rows[section] ? data.rows[section] : [];
     if (!rows.length) return;
     const cfg = SECTION_CONFIGS[section];
-    html += `<div class="section" style="margin-bottom:16px;"><div class="section-head"><h2>${sectionLabels[section]}</h2></div>`;
-    html += `<div class="sum-table-wrap"><table class="detail-table"><thead><tr>`;
+    html += `<div class="section" style="margin-bottom:16px;"><div class="section-head"><h2>${sectionLabels[section]}</h2></div><div class="sum-table-wrap"><table class="detail-table"><thead><tr>`;
     cfg.fields.forEach(f => html += `<th${f.type==='number'?' class="r"':''}>${f.label}</th>`);
     html += `</tr></thead><tbody>`;
     rows.forEach(row => {
@@ -1149,7 +1156,6 @@ function confirmData() {
     });
     html += `</tbody></table></div></div>`;
   });
-  
   document.getElementById('nova-pregled-content').innerHTML = html;
   switchInnerTab('pregled');
   event.target.textContent = '✓ Sačuvano!';
@@ -1159,16 +1165,12 @@ function confirmData() {
 
 function clearNovaData() {
   if (!confirm('Obrisati sve unesene redove za ovu godinu?')) return;
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  delete data.rows;
-  delete data.zbir;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
   Object.keys(SECTION_CONFIGS).forEach(section => {
     const tbody = document.getElementById('nova-' + section + '-body');
     if (tbody) tbody.innerHTML = '';
   });
+  if (_state.rows) delete _state.rows;
+  if (_state.zbir) delete _state.zbir;
   renderZbir();
   document.getElementById('nova-pregled-content').innerHTML = '';
 }

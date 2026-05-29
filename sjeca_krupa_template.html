@@ -385,6 +385,8 @@
     <button class="btn btn-outline btn-sm" onclick="checkAll(true)">✓ Čekiraj sve</button>
     <button class="btn btn-outline btn-sm" onclick="checkAll(false)">✗ Odčekiraj</button>
     <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
+    <button class="btn btn-primary" onclick="saveToFile()">💾 Sačuvaj</button>
+    <label class="btn btn-primary" style="cursor:pointer;">📂 Učitaj<input type="file" accept=".json" onchange="loadFromFile(event)" style="display:none"></label>
     <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
   </div>
 </div>
@@ -947,23 +949,28 @@ function getRowsData() {
   return rows;
 }
 
-function saveData() {
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  document.querySelectorAll('#tab-visoka input[type=checkbox], #tab-izdanacka input[type=checkbox]').forEach((cb, i) => { data['cb' + i] = cb.checked; });
-  data.rows = getRowsData();
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+// ── IN-MEMORY STATE (ne koristi localStorage) ──────────────────
+let _state = {};
+
+function getState() { return _state; }
+
+function collectState() {
+  const data = { year: document.getElementById('newYear').value, checkboxes: {}, rows: getRowsData() };
+  document.querySelectorAll('#tab-visoka input[type=checkbox], #tab-izdanacka input[type=checkbox]').forEach((cb, i) => { data.checkboxes['cb' + i] = cb.checked; });
+  return data;
 }
 
-function loadData() {
-  const key = getStorageKey();
-  let data;
-  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
+function applyState(data) {
   if (!data) return;
-  document.querySelectorAll('#tab-visoka input[type=checkbox], #tab-izdanacka input[type=checkbox]').forEach((cb, i) => {
-    if (data['cb' + i] !== undefined) cb.checked = data['cb' + i];
-  });
+  if (data.year) {
+    document.getElementById('newYear').value = data.year;
+    updateYearLabel(false);
+  }
+  if (data.checkboxes) {
+    document.querySelectorAll('#tab-visoka input[type=checkbox], #tab-izdanacka input[type=checkbox]').forEach((cb, i) => {
+      if (data.checkboxes['cb' + i] !== undefined) cb.checked = data.checkboxes['cb' + i];
+    });
+  }
   if (data.rows) {
     ['visoka','izdanacka'].forEach(section => {
       const tbody = document.getElementById('nova-' + section + '-body');
@@ -971,8 +978,7 @@ function loadData() {
       tbody.innerHTML = '';
       data.rows[section].forEach(rowData => {
         addRow(section);
-        const lastTr = tbody.lastElementChild;
-        lastTr.querySelectorAll('input.nova-cell-input').forEach(inp => {
+        tbody.lastElementChild.querySelectorAll('input.nova-cell-input').forEach(inp => {
           const f = inp.getAttribute('data-field');
           if (rowData[f] !== undefined) inp.value = rowData[f];
         });
@@ -981,16 +987,47 @@ function loadData() {
   }
 }
 
+function saveData() {
+  _state = collectState();
+}
+
+function loadData() { /* no-op — state loaded via file or kept in memory */ }
+
+function saveToFile() {
+  _state = collectState();
+  const y = _state.year || document.getElementById('newYear').value;
+  const json = JSON.stringify(_state, null, 2);
+  const a = document.createElement('a');
+  a.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+  a.download = 'sjeca_krupa_' + y + '.json';
+  a.click();
+}
+
+function loadFromFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      applyState(data);
+      _state = data;
+      updateProgress();
+      alert('Stanje učitano: ' + file.name);
+    } catch(err) {
+      alert('Greška pri učitavanju fajla.');
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
 function confirmData() {
   saveData();
   const y = document.getElementById('newYear').value;
-  const key = getStorageKey();
-  let data;
-  try { data = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) {}
-  
+  const data = _state;
   const sectionLabels = {visoka:'9.3 Visoka Šuma', izdanacka:'9.4 Izdanačka Šuma'};
   let html = `<h2 style="font-size:14px;font-weight:700;color:var(--green-dark);margin-bottom:16px;border-bottom:2px solid var(--green-light);padding-bottom:6px;">Plan sječa – ${y}</h2>`;
-  
   ['visoka','izdanacka'].forEach(section => {
     const rows = data && data.rows && data.rows[section] ? data.rows[section] : [];
     if (!rows.length) return;
@@ -1005,7 +1042,6 @@ function confirmData() {
     });
     html += `</tbody></table></div></div>`;
   });
-  
   document.getElementById('nova-pregled-content').innerHTML = html;
   switchInnerTab('pregled');
   event.target.textContent = '✓ Sačuvano!';
@@ -1015,15 +1051,11 @@ function confirmData() {
 
 function clearNovaData() {
   if (!confirm('Obrisati sve unesene redove za ovu godinu?')) return;
-  const key = getStorageKey();
-  let data = {};
-  try { data = JSON.parse(localStorage.getItem(key) || '{}'); } catch(e) {}
-  delete data.rows;
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
   ['visoka','izdanacka'].forEach(section => {
     const tbody = document.getElementById('nova-' + section + '-body');
     if (tbody) tbody.innerHTML = '';
   });
+  if (_state.rows) { delete _state.rows; }
   document.getElementById('nova-pregled-content').innerHTML = '';
 }
 
