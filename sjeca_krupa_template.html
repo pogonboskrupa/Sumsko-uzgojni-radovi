@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Sječa – Pogon Gospodarenja Bosanska Krupa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --accent: #f4a261;
+    --bg: #f5f5f0;
+    --white: #ffffff;
+    --gray1: #e8e8e2;
+    --gray2: #b0b0a8;
+    --gray3: #5a5a52;
+    --text: #1a1a18;
+    --done-bg: #eafaf1;
+    --done-border: #27ae60;
+    --new-bg: #fff8ee;
+    --new-border: #f4a261;
+    --header-h: 56px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* ── TOP HEADER ── */
+  .page-header {
+    background: var(--green-dark);
+    color: var(--white);
+    padding: 0 24px;
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: var(--header-h);
+    border-bottom: 3px solid var(--green-light);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .page-header .title-block {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 10px 0;
+  }
+  .page-header .org { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--green-light); font-weight: 600; }
+  .page-header h1 { font-size: 16px; font-weight: 700; line-height: 1.2; }
+  .page-header .sub { font-size: 11px; color: var(--gray2); margin-top: 2px; }
+  .page-header .controls-bar { display: flex; align-items: center; gap: 10px; }
+
+  .btn {
+    border: none; border-radius: 4px; padding: 7px 14px; font-family: inherit;
+    font-size: 12px; font-weight: 600; cursor: pointer; letter-spacing: .5px;
+    transition: all .15s;
+  }
+  .btn-primary { background: var(--green-light); color: var(--green-dark); }
+  .btn-primary:hover { background: #40a075; }
+  .btn-accent { background: var(--accent); color: var(--white); }
+  .btn-accent:hover { background: #e08847; }
+  .btn-outline { background: transparent; border: 1.5px solid var(--green-light); color: var(--green-light); }
+  .btn-outline:hover { background: rgba(82,183,136,.15); }
+  .btn-sm { padding: 4px 10px; font-size: 11px; }
+
+  /* ── YEAR SELECTOR ── */
+  .year-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray1);
+    padding: 10px 24px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .year-bar label { font-size: 11px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 1px; }
+  .year-bar input[type=number] {
+    border: 1.5px solid var(--gray2); border-radius: 4px;
+    padding: 5px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px;
+    font-weight: 600; color: var(--green-dark); width: 90px;
+    background: var(--white);
+  }
+  .year-bar input:focus { outline: none; border-color: var(--green-light); }
+  .year-pill {
+    background: var(--green-pale); color: var(--green-dark);
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
+    border: 1.5px solid var(--green-light);
+  }
+  .new-pill {
+    background: #fff3e0; color: #c0550a;
+    border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700;
+    border: 1.5px dashed var(--accent);
+  }
+  .legend { display: flex; gap: 12px; align-items: center; margin-left: auto; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray3); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ── SECTION ── */
+  .section {
+    margin: 20px 16px;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    overflow: hidden;
+  }
+  .section-head {
+    background: var(--green-dark);
+    color: var(--white);
+    padding: 10px 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-head .badge {
+    background: var(--green-light); color: var(--green-dark);
+    border-radius: 3px; padding: 2px 7px; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .section-head h2 { font-size: 13px; font-weight: 700; flex: 1; }
+  .section-head .totals { font-size: 11px; color: var(--green-light); font-family: 'IBM Plex Mono', monospace; }
+
+  .subsection-head {
+    background: var(--green-mid);
+    color: var(--white);
+    padding: 7px 18px;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .subsection-head .sh-totals { font-size: 10px; color: rgba(255,255,255,.75); margin-left: auto; font-family: 'IBM Plex Mono', monospace; }
+
+  .gj-head {
+    background: var(--green-pale);
+    padding: 6px 18px;
+    font-size: 11px; font-weight: 700; color: var(--green-dark);
+    border-bottom: 1px solid #b7e4c7;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .gj-head .gj-totals { margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--green-mid); }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; }
+  table {
+    width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 900px;
+  }
+  colgroup .c-check { width: 36px; }
+  colgroup .c-gj    { width: 130px; }
+  colgroup .c-odjel { width: 55px; }
+  colgroup .c-ods   { width: 42px; }
+  colgroup .c-kl    { width: 48px; }
+  colgroup .c-ha    { width: 52px; }
+  colgroup .c-num   { width: 58px; }
+  colgroup .c-new   { width: 62px; }
+
+  thead tr { background: var(--green-dark); color: var(--white); }
+  thead th {
+    padding: 6px 5px; font-size: 10px; font-weight: 600;
+    text-align: center; border: 1px solid rgba(255,255,255,.15);
+    text-transform: uppercase; letter-spacing: .3px;
+  }
+  thead .th-group {
+    background: var(--green-mid);
+    border-bottom: 1px solid rgba(255,255,255,.2);
+    font-size: 10px; text-transform: uppercase; letter-spacing: .5px;
+  }
+
+  tbody tr { border-bottom: 1px solid var(--gray1); }
+  tbody tr:hover { background: #f0f7f2; }
+  tbody tr.done-row { background: var(--done-bg); }
+  tbody tr.done-row td { color: #27ae60; }
+  tbody tr.new-row { background: var(--new-bg); }
+
+  td {
+    padding: 5px 6px; text-align: right; font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace; border-right: 1px solid var(--gray1);
+    white-space: nowrap;
+  }
+  td.td-left { text-align: left; font-family: 'IBM Plex Sans', sans-serif; font-size: 11px; }
+  td.td-center { text-align: center; }
+
+  td.check-cell { text-align: center; padding: 0 4px; border-right: 2px solid var(--green-mid); }
+  input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--green-mid); cursor: pointer; }
+
+  input[type=number].new-input {
+    width: 100%; border: 1.5px solid var(--new-border); border-radius: 3px;
+    padding: 2px 4px; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    background: var(--new-bg); color: #8b4500; text-align: right;
+  }
+  input[type=number].new-input:focus { outline: none; border-color: #c0550a; background: #fff; }
+
+  .td-total { background: var(--green-pale); font-weight: 700; color: var(--green-dark); border-top: 2px solid var(--green-light); }
+  .td-grand { background: var(--green-dark); color: var(--white); font-weight: 700; font-size: 12px; }
+
+  .td-zero { color: var(--gray2); }
+
+  /* ── SUMMARY BOXES ── */
+  .summary-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px; padding: 16px;
+  }
+  .sum-box {
+    background: var(--white); border-radius: 6px; border: 1px solid var(--gray1);
+    padding: 12px 16px; border-left: 4px solid var(--green-light);
+  }
+  .sum-box.accent-box { border-left-color: var(--accent); }
+  .sum-box .sum-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--gray3); }
+  .sum-box .sum-val { font-size: 22px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; color: var(--green-dark); line-height: 1.1; }
+  .sum-box .sum-sub { font-size: 10px; color: var(--gray2); margin-top: 2px; }
+  .sum-box .sum-unit { font-size: 12px; color: var(--gray3); margin-left: 3px; }
+
+  /* progress */
+  .progress-wrap { padding: 8px 18px 14px; }
+  .progress-label { font-size: 10px; color: var(--gray3); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .progress-bar-bg { background: var(--gray1); border-radius: 99px; height: 8px; overflow: hidden; }
+  .progress-bar { background: var(--green-light); height: 100%; border-radius: 99px; transition: width .3s; }
+
+  /* ═══════════════════════════════════════════
+     PRO PRINT STYLES – A4 Landscape
+  ═══════════════════════════════════════════ */
+  @media print {
+    @page { size: A4 landscape; margin: 12mm 10mm 14mm 10mm; }
+
+    /* ── Hide all interactive UI ── */
+    .no-print, .controls-bar, .tab-bar, .year-bar,
+    .progress-wrap, .legend, button, .btn,
+    .year-pill, .new-pill, input[type=number],
+    .new-input, input[type=checkbox],
+    td.check-cell, th:first-child,
+    col.c-check, col.c-new { display: none !important; }
+
+    /* ── Show all tab content ── */
+    .tab-panel { display: block !important; }
+
+    body {
+      background: white !important;
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: 8pt !important;
+      color: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── Page header → static print header ── */
+    .page-header {
+      position: static !important;
+      background: white !important;
+      color: #000 !important;
+      border-bottom: 2pt solid #000 !important;
+      border-top: none !important;
+      padding: 0 0 3mm !important;
+      margin-bottom: 4mm;
+      min-height: unset !important;
+    }
+    .page-header .org { font-size: 7.5pt !important; color: #000 !important; }
+    .page-header h1 { font-size: 13pt !important; color: #000 !important; font-family: 'Times New Roman', serif !important; }
+    .page-header .sub { font-size: 7.5pt !important; color: #333 !important; }
+
+    /* ── Summary boxes ── */
+    .summary-grid {
+      display: grid !important;
+      grid-template-columns: repeat(5, 1fr) !important;
+      gap: 4px !important;
+      padding: 3mm 0 !important;
+      margin: 0 !important;
+    }
+    #progressBox { display: none !important; }
+    .sum-box {
+      border: 0.5pt solid #aaa !important;
+      border-left: 2pt solid #000 !important;
+      padding: 3px 6px !important;
+      border-radius: 0 !important;
+      background: white !important;
+      box-shadow: none !important;
+    }
+    .sum-box.accent-box { border-left-color: #555 !important; }
+    .sum-label { font-size: 6pt !important; color: #000 !important; }
+    .sum-val { font-size: 11pt !important; font-weight: bold !important; color: #000 !important; }
+    .sum-sub { font-size: 6pt !important; color: #333 !important; }
+    .sum-unit { font-size: 8pt !important; }
+
+    /* ── Sections ── */
+    .section { margin: 3mm 0 !important; box-shadow: none !important; border: 0.5pt solid #888 !important; border-radius: 0 !important; break-inside: avoid; }
+    .section-head { background: #111 !important; color: white !important; padding: 3px 8px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-head .badge { display: none !important; }
+    .section-head h2 { font-size: 9pt !important; font-family: 'Times New Roman', serif !important; }
+    .section-head .totals { font-size: 7pt !important; color: #ccc !important; }
+
+    /* ── Tables ── */
+    .tbl-wrap { overflow: visible !important; }
+    table { width: 100% !important; min-width: unset !important; border-collapse: collapse !important; font-size: 7pt !important; table-layout: auto !important; }
+    thead tr { background: #222 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    thead th { padding: 3px 4px !important; font-size: 6.5pt !important; border: 0.5pt solid #666 !important; font-family: 'Times New Roman', serif !important; }
+    tbody td { padding: 2px 4px !important; font-size: 7pt !important; border: 0.3pt solid #ccc !important; font-family: 'Times New Roman', serif !important; }
+    tbody tr:hover { background: transparent !important; }
+    tbody tr.done-row { background: #f2f2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    tbody tr.done-row td { color: #000 !important; }
+    .td-total { background: #e4e4e4 !important; font-weight: bold !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-top: 1pt solid #000 !important; }
+    .td-grand { background: #111 !important; color: white !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .td-zero { color: #999 !important; }
+    .gj-head { background: #e8f4ec !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* ── Grand total footer bars ── */
+    div[style*="background:var(--green-dark)"], div[style*="background:#0d2317"] {
+      background: #111 !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      margin: 2mm 0 !important; padding: 5px 8px !important; border-radius: 0 !important;
+      display: flex !important; flex-wrap: wrap; gap: 16px;
+    }
+
+    /* ── Section headings in print ── */
+    #tab-visoka { page-break-after: always; }
+    #tab-izdanacka { page-break-before: always; }
+
+    #tab-visoka::before {
+      content: "9.3  POGON GOSPODARENJA BOSANSKA KRUPA – VISOKA ŠUMA";
+      display: block; font-size: 11pt; font-weight: bold;
+      font-family: 'Times New Roman', serif;
+      border-bottom: 1pt solid #000; padding-bottom: 2mm; margin-bottom: 3mm;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    #tab-izdanacka::before {
+      content: "9.4  POGON GOSPODARENJA BOSANSKA KRUPA – IZDANAČKA ŠUMA";
+      display: block; font-size: 11pt; font-weight: bold;
+      font-family: 'Times New Roman', serif;
+      border-bottom: 1pt solid #000; padding-bottom: 2mm; margin-bottom: 3mm;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* ── Running footer ── */
+    body::after {
+      content: "ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa  ·  Plan sječa – Pogon Gospodarenja Bosanska Krupa  ·  Revidirani plan za 2026. godinu";
+      display: block;
+      font-size: 6.5pt;
+      color: #555;
+      border-top: 0.5pt solid #aaa;
+      padding-top: 2mm;
+      margin-top: 4mm;
+      text-align: center;
+      font-family: 'Times New Roman', serif;
+    }
+  }
+
+  /* tabs */
+  .tab-bar { display: flex; padding: 12px 16px 0; gap: 4px; border-bottom: 2px solid var(--green-light); }
+  .tab-btn {
+    padding: 7px 16px; background: var(--gray1); border: none; border-radius: 5px 5px 0 0;
+    font-family: inherit; font-size: 12px; font-weight: 600; color: var(--gray3);
+    cursor: pointer; transition: all .15s;
+  }
+  .tab-btn.active { background: var(--green-dark); color: var(--white); }
+  .tab-btn:hover:not(.active) { background: var(--green-pale); color: var(--green-dark); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="title-block">
+    <div class="org">ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa</div>
+    <h1>Plan Sječa – Pogon Gospodarenja Bosanska Krupa</h1>
+    <div class="sub">Revidirani plan rada i poslovanja • Sekcija 9.3 &amp; 9.4</div>
+  </div>
+  <div class="controls-bar no-print">
+    <button class="btn btn-outline btn-sm" onclick="checkAll(true)">✓ Čekiraj sve</button>
+    <button class="btn btn-outline btn-sm" onclick="checkAll(false)">✗ Odčekiraj</button>
+    <button class="btn btn-primary" onclick="exportCSV()">⬇ CSV</button>
+    <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
+  </div>
+</div>
+
+<!-- YEAR BAR -->
+<div class="year-bar no-print">
+  <label>Referentna godina:</label>
+  <span class="year-pill">📋 2026</span>
+  <label>Nova godina za unos:</label>
+  <input type="number" id="newYear" value="2027" min="2024" max="2035" onchange="updateYearLabel()">
+  <span class="new-pill" id="newYearPill">✎ 2027</span>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#52b788"></div> Plan 2026</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f4a261"></div> Unos <span id="legendYear">2027</span></div>
+    <div class="legend-item"><input type="checkbox" checked disabled> Izvršeno</div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary-grid" style="padding:16px 16px 0;">
+  <div class="sum-box">
+    <div class="sum-label">Ukupna površina</div>
+    <div class="sum-val">1.523,6<span class="sum-unit">ha</span></div>
+    <div class="sum-sub">Visoke + Izdanačke šume</div>
+  </div>
+  <div class="sum-box">
+    <div class="sum-label">Ukupno bruto</div>
+    <div class="sum-val">78.523<span class="sum-unit">m³</span></div>
+    <div class="sum-sub">Visoke: 71.520 | Izdanačke: 7.003</div>
+  </div>
+  <div class="sum-box">
+    <div class="sum-label">Ukupno neto</div>
+    <div class="sum-val">65.486<span class="sum-unit">m³</span></div>
+    <div class="sum-sub">Visoke: 60.054 | Izdanačke: 5.432</div>
+  </div>
+  <div class="sum-box accent-box">
+    <div class="sum-label">Četinari (neto)</div>
+    <div class="sum-val">14.768<span class="sum-unit">m³</span></div>
+    <div class="sum-sub">Trupci: 12.474 | Cjepano: 2.293</div>
+  </div>
+  <div class="sum-box">
+    <div class="sum-label">Lišćari (neto)</div>
+    <div class="sum-val">50.718<span class="sum-unit">m³</span></div>
+    <div class="sum-sub">Trupci: 17.472 | Cjepano: 33.246</div>
+  </div>
+  <div class="sum-box" id="progressBox">
+    <div class="sum-label">Napredak izvršenja</div>
+    <div class="sum-val" id="progressPct">0%</div>
+    <div class="sum-sub" id="progressSub">0 / 0 odjela izvršeno</div>
+  </div>
+</div>
+<div class="progress-wrap no-print">
+  <div class="progress-label"><span>Izvršeno odjela</span><span id="progressText">0%</span></div>
+  <div class="progress-bar-bg"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar no-print">
+  <button class="tab-btn active" onclick="switchTab('visoka')">9.3 Visoka Šuma</button>
+  <button class="tab-btn" onclick="switchTab('izdanacka')">9.4 Izdanačka Šuma</button>
+</div>
+
+<!-- =========================================================
+     TAB: VISOKA ŠUMA
+     ========================================================= -->
+<div id="tab-visoka" class="tab-panel active">
+
+<!-- ── GJ RISOVAC-KRUPA ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge">GJ</span>
+    <h2>RISOVAC-KRUPA – Visoka Šuma</h2>
+    <span class="totals">759,2 ha | Bruto: 48.583 m³ | Neto: 40.893 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table id="tbl-risovac-v">
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="3" class="c-check">✓</th>
+        <th rowspan="3">Odjel</th>
+        <th rowspan="3">Ods.</th>
+        <th rowspan="3">G.Kl.</th>
+        <th rowspan="3">ha</th>
+        <th colspan="2">Ukupna masa</th>
+        <th colspan="4">Četinari</th>
+        <th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff" id="newYearH1">2027 – Unos</th>
+      </tr>
+      <tr>
+        <th>Bruto<br>(m³)</th><th>Neto<br>(m³)</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th>
+        <th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<!-- Odjel 13 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-left td-center">13</td><td class="td-center">1</td><td class="td-center">1116</td><td>49,7</td><td>2.700</td><td>2.315</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.699</td><td>2.314</td><td>799</td><td>1.515</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">2</td><td class="td-center">3201</td><td>18,8</td><td>544</td><td>453</td><td>6</td><td>4</td><td>3</td><td>2</td><td>538</td><td>449</td><td>76</td><td>373</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">13</td><td class="td-center">3</td><td class="td-center">3201</td><td>1,3</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 35 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">1</td><td class="td-center">1202</td><td>12,2</td><td>661</td><td>575</td><td>36</td><td>29</td><td>25</td><td>5</td><td>626</td><td>546</td><td>243</td><td>303</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">2</td><td class="td-center">1117</td><td>78,8</td><td>4.477</td><td>3.857</td><td class="td-zero">1</td><td class="td-zero">1</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.476</td><td>3.856</td><td>1.559</td><td>2.298</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">35</td><td class="td-center">3</td><td class="td-center">3202</td><td>7,9</td><td>279</td><td>216</td><td>182</td><td>136</td><td>97</td><td>39</td><td>97</td><td>80</td><td>11</td><td>69</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 50 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">50</td><td class="td-center">—</td><td class="td-center">1202</td><td>76,6</td><td>5.161</td><td>4.329</td><td>2.561</td><td>2.051</td><td>1.824</td><td>227</td><td>2.600</td><td>2.278</td><td>971</td><td>1.307</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 54P -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">54 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>22,9</td><td>1.511</td><td>1.276</td><td>890</td><td>748</td><td>639</td><td>109</td><td>621</td><td>528</td><td>208</td><td>320</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 55 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">55</td><td class="td-center">—</td><td class="td-center">1202</td><td>63,7</td><td>5.195</td><td>4.258</td><td>3.221</td><td>2.521</td><td>2.193</td><td>328</td><td>1.974</td><td>1.737</td><td>789</td><td>948</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 56 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">56</td><td class="td-center">—</td><td class="td-center">1202</td><td>48,8</td><td>3.877</td><td>3.206</td><td>2.526</td><td>2.042</td><td>1.779</td><td>263</td><td>1.351</td><td>1.164</td><td>439</td><td>725</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 59/1 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">59/1</td><td class="td-center">—</td><td class="td-center">1202</td><td>43,1</td><td>3.724</td><td>3.087</td><td>2.221</td><td>1.753</td><td>1.545</td><td>208</td><td>1.503</td><td>1.334</td><td>658</td><td>676</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 63 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">63</td><td class="td-center">—</td><td class="td-center">1202</td><td>52,2</td><td>4.033</td><td>3.339</td><td>1.982</td><td>1.545</td><td>1.309</td><td>236</td><td>2.051</td><td>1.794</td><td>796</td><td>998</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 66 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>47,0</td><td>2.335</td><td>2.048</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.335</td><td>2.048</td><td>949</td><td>1.099</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">3202</td><td>5,0</td><td>30</td><td>25</td><td>24</td><td>20</td><td class="td-zero">0</td><td>20</td><td>6</td><td>5</td><td class="td-zero">0</td><td>5</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">3</td><td class="td-center">3202</td><td>1,7</td><td>10</td><td>8</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">4</td><td class="td-center">3202</td><td>0,4</td><td>4</td><td>3</td><td>3</td><td>2</td><td class="td-zero">0</td><td>2</td><td>1</td><td>1</td><td class="td-zero">0</td><td>1</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">5</td><td class="td-center">3208</td><td>9,3</td><td>50</td><td>43</td><td>27</td><td>22</td><td class="td-zero">0</td><td>22</td><td>23</td><td>21</td><td class="td-zero">0</td><td>21</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 68/2 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">1</td><td class="td-center">1202</td><td>8,6</td><td>526</td><td>460</td><td>52</td><td>41</td><td>35</td><td>6</td><td>474</td><td>419</td><td>207</td><td>212</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">68/2</td><td class="td-center">2</td><td class="td-center">1117</td><td>38,4</td><td>2.079</td><td>1.827</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>2.079</td><td>1.827</td><td>805</td><td>1.022</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 71P -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">1</td><td class="td-center">1202</td><td>29,0</td><td>1.835</td><td>1.551</td><td>926</td><td>778</td><td>664</td><td>114</td><td>909</td><td>773</td><td>356</td><td>417</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">71 P</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,9</td><td>122</td><td>104</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>122</td><td>104</td><td>45</td><td>59</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 97 -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">1</td><td class="td-center">1202</td><td>58,8</td><td>3.962</td><td>3.272</td><td>1.887</td><td>1.489</td><td>1.253</td><td>236</td><td>2.075</td><td>1.783</td><td>646</td><td>1.137</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">97</td><td class="td-center">2</td><td class="td-center">1117</td><td>16,2</td><td>927</td><td>786</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>927</td><td>786</td><td>255</td><td>531</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- Odjel 113P -->
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>11,9</td><td>449</td><td>383</td><td>138</td><td>114</td><td>96</td><td>18</td><td>311</td><td>269</td><td>100</td><td>169</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>55,0</td><td>4.092</td><td>3.472</td><td>171</td><td>140</td><td>114</td><td>26</td><td>3.921</td><td>3.332</td><td>1.113</td><td>2.219</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<!-- TOTAL -->
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „RISOVAC-KRUPA"</td>
+  <td class="td-total">759,2</td><td class="td-total">48.583</td><td class="td-total">40.893</td>
+  <td class="td-total">16.865</td><td class="td-total">13.445</td><td class="td-total">11.575</td><td class="td-total">1.869</td>
+  <td class="td-total">31.718</td><td class="td-total">27.449</td><td class="td-total">11.025</td><td class="td-total">16.424</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ── GJ GRMEČ-JASENICA ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge">GJ</span>
+    <h2>GRMEČ-JASENICA – Visoka Šuma</h2>
+    <span class="totals">396,6 ha | Bruto: 22.151 m³ | Neto: 18.537 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">✓</th><th rowspan="2">Odjel</th><th rowspan="2">Ods.</th><th rowspan="2">G.Kl.</th><th rowspan="2">ha</th>
+        <th colspan="2">Ukupna masa</th><th colspan="4">Četinari</th><th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff">Unos <span class="new-year-lbl">2027</span></th>
+      </tr>
+      <tr>
+        <th>Bruto</th><th>Neto</th><th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th><th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">1</td><td class="td-center">1116</td><td>20,7</td><td>1.196</td><td>1.017</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.196</td><td>1.017</td><td>203</td><td>814</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">1</td><td class="td-center">1202</td><td>1,2</td><td>110</td><td>95</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>110</td><td>95</td><td>42</td><td>53</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">11 p</td><td class="td-center">2</td><td class="td-center">1117</td><td>1,8</td><td>98</td><td>84</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>98</td><td>84</td><td>31</td><td>53</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">43 p</td><td class="td-center">—</td><td class="td-center">1211</td><td>30,2</td><td>1.099</td><td>740</td><td>220</td><td>140</td><td>40</td><td>100</td><td>879</td><td>600</td><td>160</td><td>440</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">60</td><td class="td-center">—</td><td class="td-center">1201</td><td>49,0</td><td>3.551</td><td>3.061</td><td>463</td><td>359</td><td>295</td><td>65</td><td>3.088</td><td>2.701</td><td>1.050</td><td>1.651</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">61</td><td class="td-center">—</td><td class="td-center">1202</td><td>87,3</td><td>4.774</td><td>4.105</td><td>715</td><td>556</td><td>454</td><td>102</td><td>4.059</td><td>3.549</td><td>1.393</td><td>2.156</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">1</td><td class="td-center">1117</td><td>10,0</td><td>780</td><td>430</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>780</td><td>430</td><td>190</td><td>240</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">2</td><td class="td-center">3201</td><td>9,2</td><td>189</td><td>157</td><td>41</td><td>31</td><td>11</td><td>20</td><td>148</td><td>126</td><td>21</td><td>105</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">64/2 p</td><td class="td-center">3</td><td class="td-center">3201</td><td>0,5</td><td>27</td><td>21</td><td>7</td><td>5</td><td>2</td><td>3</td><td>20</td><td>16</td><td class="td-zero">0</td><td>16</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">1</td><td class="td-center">1117</td><td>68,7</td><td>3.975</td><td>3.334</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>3.975</td><td>3.334</td><td>1.025</td><td>2.309</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">1</td><td class="td-center">1117</td><td>71,6</td><td>4.113</td><td>3.558</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>4.113</td><td>3.558</td><td>1.277</td><td>2.281</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">67</td><td class="td-center">2</td><td class="td-center">1116</td><td>11,0</td><td>740</td><td>641</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>740</td><td>641</td><td>253</td><td>388</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">69 P</td><td class="td-center">—</td><td class="td-center">1202</td><td>25,8</td><td>1.309</td><td>1.204</td><td>102</td><td>114</td><td>82</td><td>32</td><td>1.207</td><td>1.090</td><td>390</td><td>700</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">1</td><td class="td-center">3208</td><td>9,6</td><td>190</td><td>90</td><td>120</td><td>65</td><td class="td-zero">0</td><td>65</td><td>70</td><td>25</td><td class="td-zero">0</td><td>25</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GRMEČ-JASENICA"</td>
+  <td class="td-total">396,6</td><td class="td-total">22.151</td><td class="td-total">18.537</td>
+  <td class="td-total">1.667</td><td class="td-total">1.270</td><td class="td-total">884</td><td class="td-total">386</td>
+  <td class="td-total">20.483</td><td class="td-total">17.267</td><td class="td-total">6.035</td><td class="td-total">11.231</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ── GJ GOMILA ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge">GJ</span>
+    <h2>GOMILA – Visoka Šuma</h2>
+    <span class="totals">13,0 ha | Bruto: 787 m³ | Neto: 624 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">✓</th><th rowspan="2">Odjel</th><th rowspan="2">Ods.</th><th rowspan="2">G.Kl.</th><th rowspan="2">ha</th>
+        <th colspan="2">Ukupna masa</th><th colspan="4">Četinari</th><th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff">Unos <span class="new-year-lbl">2027</span></th>
+      </tr>
+      <tr>
+        <th>Bruto</th><th>Neto</th><th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th><th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">1</td><td class="td-center">1101</td><td>10,0</td><td>640</td><td>500</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>640</td><td>500</td><td>180</td><td>320</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">21 p</td><td class="td-center">2</td><td class="td-center">1102</td><td>3,0</td><td>147</td><td>124</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>147</td><td>124</td><td>22</td><td>102</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GOMILA"</td>
+  <td class="td-total">13,0</td><td class="td-total">787</td><td class="td-total">624</td>
+  <td class="td-total td-zero">0</td><td class="td-total td-zero">0</td><td class="td-total td-zero">0</td><td class="td-total td-zero">0</td>
+  <td class="td-total">787</td><td class="td-total">624</td><td class="td-total">202</td><td class="td-total">422</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- Visoke suma total -->
+<div style="background:var(--green-dark);color:white;margin:4px 16px 20px;border-radius:6px;padding:10px 18px;display:flex;gap:24px;align-items:center;font-family:'IBM Plex Mono',monospace;">
+  <span style="font-size:11px;font-weight:700;font-family:'IBM Plex Sans',sans-serif;letter-spacing:1px;color:#52b788;">UKUPNO VISOKE ŠUME</span>
+  <span style="font-size:13px;font-weight:700;">1.168,8 ha</span>
+  <span>Bruto: <strong>71.520 m³</strong></span>
+  <span>Neto: <strong>60.054 m³</strong></span>
+  <span style="color:#a8dabc">Čet.bruto: 18.532 | Liš.bruto: 52.988</span>
+</div>
+
+</div><!-- end tab-visoka -->
+
+<!-- =========================================================
+     TAB: IZDANAČKA ŠUMA
+     ========================================================= -->
+<div id="tab-izdanacka" class="tab-panel">
+
+<!-- ── GJ RISOVAC-KRUPA (izdanačka) ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#f4a261;color:#fff">IZD</span>
+    <h2>RISOVAC-KRUPA – Izdanačka Šuma</h2>
+    <span class="totals">31,4 ha | Bruto: 852 m³ | Neto: 625 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">✓</th><th rowspan="2">Odjel</th><th rowspan="2">Ods.</th><th rowspan="2">G.Kl.</th><th rowspan="2">ha</th>
+        <th colspan="2">Ukupna masa</th><th colspan="4">Četinari</th><th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff">Unos <span class="new-year-lbl">2027</span></th>
+      </tr>
+      <tr>
+        <th>Bruto</th><th>Neto</th><th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th><th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">8</td><td class="td-center">4412</td><td>26,4</td><td>216</td><td>180</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>216</td><td>180</td><td class="td-zero">0</td><td>180</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">113 p</td><td class="td-center">3</td><td class="td-center">4115</td><td>5,0</td><td>636</td><td>445</td><td>68</td><td>45</td><td>15</td><td>30</td><td>568</td><td>400</td><td>65</td><td>335</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „RISOVAC-KRUPA" (izd.)</td>
+  <td class="td-total">31,4</td><td class="td-total">852</td><td class="td-total">625</td>
+  <td class="td-total">68</td><td class="td-total">45</td><td class="td-total">15</td><td class="td-total">30</td>
+  <td class="td-total">784</td><td class="td-total">580</td><td class="td-total">65</td><td class="td-total">515</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ── GJ GRMEČ-JASENICA (izdanačka) ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#f4a261;color:#fff">IZD</span>
+    <h2>GRMEČ-JASENICA – Izdanačka Šuma</h2>
+    <span class="totals">249,1 ha | Bruto: 4.951 m³ | Neto: 3.787 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">✓</th><th rowspan="2">Odjel</th><th rowspan="2">Ods.</th><th rowspan="2">G.Kl.</th><th rowspan="2">ha</th>
+        <th colspan="2">Ukupna masa</th><th colspan="4">Četinari</th><th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff">Unos <span class="new-year-lbl">2027</span></th>
+      </tr>
+      <tr>
+        <th>Bruto</th><th>Neto</th><th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th><th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">4/1</td><td class="td-center">2</td><td class="td-center">4119</td><td>50,5</td><td>1.294</td><td>1.100</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.294</td><td>1.100</td><td>100</td><td>1.000</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">66</td><td class="td-center">2</td><td class="td-center">4115</td><td>68,2</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.364</td><td>1.159</td><td class="td-zero">0</td><td>1.159</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">85 p</td><td class="td-center">2</td><td class="td-center">4107</td><td>80,4</td><td>488</td><td>328</td><td>10</td><td>8</td><td class="td-zero">0</td><td>8</td><td>478</td><td>320</td><td>25</td><td>295</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">88 p</td><td class="td-center">—</td><td class="td-center">4107</td><td>50,0</td><td>1.805</td><td>1.200</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>1.805</td><td>1.200</td><td>20</td><td>1.180</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „GRMEČ-JASENICA" (izd.)</td>
+  <td class="td-total">249,1</td><td class="td-total">4.951</td><td class="td-total">3.787</td>
+  <td class="td-total">10</td><td class="td-total">8</td><td class="td-total td-zero">0</td><td class="td-total">8</td>
+  <td class="td-total">4.941</td><td class="td-total">3.779</td><td class="td-total">145</td><td class="td-total">3.634</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ── GJ VOJSKOVA (izdanačka) ── -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#f4a261;color:#fff">IZD</span>
+    <h2>VOJSKOVA – Izdanačka Šuma</h2>
+    <span class="totals">74,3 ha | Bruto: 1.200 m³ | Neto: 1.020 m³</span>
+  </div>
+  <div class="tbl-wrap">
+  <table>
+    <colgroup>
+      <col class="c-check"><col class="c-odjel"><col class="c-ods"><col class="c-kl"><col class="c-ha">
+      <col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-num"><col class="c-num"><col class="c-num"><col class="c-num">
+      <col class="c-new"><col class="c-new">
+    </colgroup>
+    <thead>
+      <tr>
+        <th rowspan="2">✓</th><th rowspan="2">Odjel</th><th rowspan="2">Ods.</th><th rowspan="2">G.Kl.</th><th rowspan="2">ha</th>
+        <th colspan="2">Ukupna masa</th><th colspan="4">Četinari</th><th colspan="4">Lišćari</th>
+        <th colspan="2" style="background:#f4a261;color:#fff">Unos <span class="new-year-lbl">2027</span></th>
+      </tr>
+      <tr>
+        <th>Bruto</th><th>Neto</th><th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th>Bruto</th><th>Neto</th><th>Trup.</th><th>Cjep.</th>
+        <th style="background:#f4a261;color:#fff">Bruto</th><th style="background:#f4a261;color:#fff">Neto</th>
+      </tr>
+    </thead>
+    <tbody>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">15</td><td class="td-center">1</td><td class="td-center">4111</td><td>32,7</td><td>450</td><td>383</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>450</td><td>383</td><td class="td-zero">0</td><td>383</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr><td class="check-cell"><input type="checkbox" onchange="updateProgress()"></td><td class="td-center">25</td><td class="td-center">1</td><td class="td-center">4112</td><td>41,6</td><td>750</td><td>637</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td class="td-zero">0</td><td>750</td><td>637</td><td class="td-zero">0</td><td>637</td><td><input type="number" class="new-input" placeholder="—"></td><td><input type="number" class="new-input" placeholder="—"></td></tr>
+<tr>
+  <td colspan="4" class="td-left td-total" style="padding-left:10px; font-size:11px; font-family:'IBM Plex Sans',sans-serif;">UKUPNO G.J. „VOJSKOVA" (izd.)</td>
+  <td class="td-total">74,3</td><td class="td-total">1.200</td><td class="td-total">1.020</td>
+  <td class="td-total td-zero">0</td><td class="td-total td-zero">0</td><td class="td-total td-zero">0</td><td class="td-total td-zero">0</td>
+  <td class="td-total">1.200</td><td class="td-total">1.020</td><td class="td-total td-zero">0</td><td class="td-total">1.020</td>
+  <td class="td-total" colspan="2"></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- Izdanacke suma total -->
+<div style="background:var(--green-dark);color:white;margin:4px 16px 20px;border-radius:6px;padding:10px 18px;display:flex;gap:24px;align-items:center;font-family:'IBM Plex Mono',monospace;">
+  <span style="font-size:11px;font-weight:700;font-family:'IBM Plex Sans',sans-serif;letter-spacing:1px;color:#f4a261;">UKUPNO IZDANAČKE ŠUME</span>
+  <span style="font-size:13px;font-weight:700;">354,8 ha</span>
+  <span>Bruto: <strong>7.003 m³</strong></span>
+  <span>Neto: <strong>5.432 m³</strong></span>
+  <span style="color:#a8dabc">Čet.bruto: 78 | Liš.bruto: 6.925</span>
+</div>
+
+<!-- GRAND TOTAL -->
+<div style="background:#0d2317;color:white;margin:4px 16px 24px;border-radius:8px;padding:14px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;border:2px solid var(--green-light);">
+  <div>
+    <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#52b788;">UKUPNO POGON GOSPOD. B.KRUPA</div>
+    <div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-top:2px;">1.523,6 ha</div>
+  </div>
+  <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Bruto ukupno</div><div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;">78.523 m³</div></div>
+  <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Neto ukupno</div><div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;">65.486 m³</div></div>
+  <div><div style="font-size:9px;color:#f4a261;text-transform:uppercase;">Četinari neto</div><div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;">14.768 m³</div></div>
+  <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Lišćari neto</div><div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;">50.718 m³</div></div>
+</div>
+
+</div><!-- end tab-izdanacka -->
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function updateYearLabel() {
+  const y = document.getElementById('newYear').value;
+  document.getElementById('newYearPill').textContent = '✎ ' + y;
+  document.getElementById('legendYear').textContent = y;
+  document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
+  document.querySelectorAll('[id^=newYearH1]').forEach(el => el.textContent = y + ' – Unos');
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('input[type=checkbox]');
+  const checked = document.querySelectorAll('input[type=checkbox]:checked');
+  const pct = all.length ? Math.round(checked.length / all.length * 100) : 0;
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressSub').textContent = checked.length + ' / ' + all.length + ' odjela izvršeno';
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = pct + '%';
+  // row highlighting
+  document.querySelectorAll('tbody tr').forEach(row => {
+    const cb = row.querySelector('input[type=checkbox]');
+    if (cb) { row.classList.toggle('done-row', cb.checked); }
+  });
+}
+
+function checkAll(state) {
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = state);
+  updateProgress();
+}
+
+function exportCSV() {
+  const rows = [['GJ', 'Odjel', 'Odsjek', 'G.Klasa', 'ha', 'Bruto_2026', 'Neto_2026', 'Izvrse.']];
+  document.querySelectorAll('tbody tr:not(:last-child)').forEach(row => {
+    const tds = row.querySelectorAll('td');
+    const cb = row.querySelector('input[type=checkbox]');
+    if (!tds.length || !cb) return;
+    const gj = row.closest('.section')?.querySelector('h2')?.textContent?.split(' – ')[0] || '';
+    rows.push([
+      gj,
+      tds[1]?.textContent?.trim() || '',
+      tds[2]?.textContent?.trim() || '',
+      tds[3]?.textContent?.trim() || '',
+      tds[4]?.textContent?.trim() || '',
+      tds[5]?.textContent?.trim() || '',
+      tds[6]?.textContent?.trim() || '',
+      cb.checked ? 'DA' : 'NE'
+    ]);
+  });
+  const csv = rows.map(r => r.join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = 'sjeca_krupa_2026.csv';
+  a.click();
+}
+
+updateProgress();
+</script>
+</body>
+</html>

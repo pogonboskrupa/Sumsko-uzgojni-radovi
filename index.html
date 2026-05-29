@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ŠPD Unsko-sanske šume – Šumarija Krupa | Planovi</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a3a2a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ŠPD Krupa">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+  :root { --green-dark:#1a3a2a; --green-mid:#2d6a4f; --green-light:#52b788; --green-pale:#d8f3dc; --accent:#f4a261; --bg:#f4f4ef; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'IBM Plex Sans',sans-serif; background:var(--bg); color:#1a1a18; min-height:100vh; display:flex; flex-direction:column; }
+  header { background:var(--green-dark); color:white; padding:32px 40px; border-bottom:4px solid var(--green-light); }
+  header .org { font-size:11px; text-transform:uppercase; letter-spacing:2px; color:var(--green-light); font-weight:600; }
+  header h1 { font-size:26px; font-weight:700; margin-top:6px; line-height:1.2; }
+  header .sub { font-size:13px; color:rgba(255,255,255,.6); margin-top:6px; }
+  main { flex:1; padding:40px; max-width:900px; }
+  h2 { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; color:var(--green-mid); margin-bottom:20px; border-bottom:2px solid var(--green-light); padding-bottom:8px; }
+  .card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:20px; margin-bottom:40px; }
+  .card { background:white; border-radius:10px; border:1px solid #e0e0d8; box-shadow:0 2px 8px rgba(0,0,0,.07); overflow:hidden; transition:transform .15s, box-shadow .15s; }
+  .card:hover { transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,0,0,.12); }
+  .card-head { background:var(--green-dark); color:white; padding:16px 20px; }
+  .card-head .tag { background:var(--green-light); color:var(--green-dark); border-radius:3px; padding:2px 8px; font-size:10px; font-weight:700; text-transform:uppercase; margin-bottom:8px; display:inline-block; }
+  .card-head h3 { font-size:15px; font-weight:700; }
+  .card-head .card-sub { font-size:11px; color:rgba(255,255,255,.6); margin-top:4px; }
+  .card-body { padding:18px 20px; }
+  .feature { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:12px; color:#444; }
+  .feature .icon { font-size:15px; flex-shrink:0; }
+  .card-footer { padding:0 20px 18px; }
+  .btn-open { display:block; text-align:center; background:var(--green-mid); color:white; text-decoration:none; border-radius:6px; padding:11px; font-family:'IBM Plex Sans',sans-serif; font-size:13px; font-weight:700; letter-spacing:.5px; transition:background .15s; }
+  .btn-open:hover { background:var(--green-dark); }
+  .badge-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .badge { background:var(--green-pale); color:var(--green-dark); border:1px solid var(--green-light); border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; }
+  footer { background:var(--green-dark); color:rgba(255,255,255,.5); text-align:center; padding:16px; font-size:11px; border-top:2px solid var(--green-mid); }
+  footer a { color:var(--green-light); text-decoration:none; }
+</style>
+</head>
+<body>
+<header>
+  <div class="org">ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa</div>
+  <h1>Šumarija Krupa – Digitalni Planovi</h1>
+  <div class="sub">Revidirani plan rada i poslovanja · Pogon Gospodarenja Bosanska Krupa · 2026</div>
+</header>
+<main>
+  <h2>Dostupni dokumenti</h2>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-head">
+        <span class="tag">Sekcija 9.3 &amp; 9.4</span>
+        <h3>Plan Sječa</h3>
+        <div class="card-sub">Pogon Gospodarenja Bosanska Krupa</div>
+      </div>
+      <div class="card-body">
+        <div class="badge-row">
+          <span class="badge">Visoka šuma</span>
+          <span class="badge">Izdanačka šuma</span>
+          <span class="badge">1.523,6 ha</span>
+          <span class="badge">78.523 m³ bruto</span>
+        </div>
+        <div class="feature"><span class="icon">🌲</span><span>GJ Risovac-Krupa, Grmeč-Jasenica, Gomila, Vojskova — svi odjeli i odsjeci</span></div>
+        <div class="feature"><span class="icon">✓</span><span>Čekiranje izvršenih odjela s progress praćenjem</span></div>
+        <div class="feature"><span class="icon">✎</span><span>Kolona za unos podataka iduće godine</span></div>
+        <div class="feature"><span class="icon">🖨</span><span>Pro štampanje: A4 landscape, bez UI elemenata</span></div>
+        <div class="feature"><span class="icon">⬇</span><span>CSV export izvršenih/neizvršenih odjela</span></div>
+      </div>
+      <div class="card-footer">
+        <a class="btn-open" href="sjeca_krupa_template.html">📂 Otvori Plan Sječa →</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="tag" style="background:#f4a261;color:white;">Sekcija 10.3</div>
+        <h3>Plan Šumsko-uzgojnih Radova</h3>
+        <div class="card-sub">Pogon Gospodarenja Bosanska Krupa</div>
+      </div>
+      <div class="card-body">
+        <div class="badge-row">
+          <span class="badge">485,50 ha ukupno</span>
+          <span class="badge">354,80 ha melioracije</span>
+          <span class="badge">63,70 ha njege kultura</span>
+        </div>
+        <div class="feature"><span class="icon">🌱</span><span>Priprema terena, pošumljavanje, njege — sve stavke 1–17</span></div>
+        <div class="feature"><span class="icon">📊</span><span>Zbirna tabela + detaljne tabele po vrstama radova</span></div>
+        <div class="feature"><span class="icon">✓</span><span>Čekiranje radnih stavki s praćenjem napretka</span></div>
+        <div class="feature"><span class="icon">✎</span><span>Unos površina za iduću godinu po odjelima</span></div>
+        <div class="feature"><span class="icon">🖨</span><span>Pro štampanje: A4 portrait, professionalne sekcije</span></div>
+      </div>
+      <div class="card-footer">
+        <a class="btn-open" href="uzgojni_radovi_krupa_template.html" style="background:#c05621;">🌿 Otvori Plan Uzgojnih Radova →</a>
+      </div>
+    </div>
+
+  </div>
+
+  <h2>Upute za korištenje</h2>
+  <div style="background:white;border-radius:8px;padding:20px 24px;border:1px solid #e0e0d8;font-size:13px;line-height:1.8;color:#333;">
+    <p><strong>1. Čekiranje</strong> — Čekiraj odjel/stavku kada je rad izvršen. Red se automatski oboji zeleno.</p>
+    <p><strong>2. Unos podataka za iduću godinu</strong> — Narandžaste kolone/polja su za unos novih vrijednosti. Promijeni godinu na vrhu dokumenta.</p>
+    <p><strong>3. Štampanje</strong> — Klikni 🖨 <em>Štampaj</em>. Svi tabovi se automatski printaju, dugmad i interaktivni elementi se skrivaju.</p>
+    <p><strong>4. CSV export</strong> (samo sječa) — Klikni ⬇ <em>CSV</em> za preuzimanje tabele sa statusom izvršenja.</p>
+    <p style="margin-top:10px;color:#666;font-size:12px;">Podaci iz: <em>Revidirani plan rada i poslovanja SPD za 2026. godinu</em> · Sekcije 9.3, 9.4, 10.3</p>
+  </div>
+</main>
+<footer>
+  ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa &nbsp;·&nbsp; Pogon Gospodarenja Bosanska Krupa &nbsp;·&nbsp; Plan 2026
+</footer>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js');
+  }
+</script>
+</body>
+</html>

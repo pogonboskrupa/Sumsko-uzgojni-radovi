@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="bs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Šumsko-uzgojni Radovi – Pogon Gospodarenja Bosanska Krupa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600;700&display=swap');
+
+  :root {
+    --green-dark: #1a3a2a;
+    --green-mid: #2d6a4f;
+    --green-light: #52b788;
+    --green-pale: #d8f3dc;
+    --accent: #e76f51;
+    --accent2: #2196F3;
+    --bg: #f4f4ef;
+    --white: #ffffff;
+    --gray1: #e8e8e2;
+    --gray2: #b0b0a8;
+    --gray3: #5a5a52;
+    --text: #1a1a18;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--green-dark);
+    color: var(--white);
+    padding: 0 24px;
+    display: flex; align-items: stretch; justify-content: space-between; gap: 16px;
+    min-height: 58px;
+    border-bottom: 3px solid var(--green-light);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .page-header .title-block { display: flex; flex-direction: column; justify-content: center; padding: 10px 0; }
+  .page-header .org { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: var(--green-light); font-weight: 600; }
+  .page-header h1 { font-size: 16px; font-weight: 700; }
+  .page-header .sub { font-size: 11px; color: var(--gray2); margin-top: 2px; }
+  .controls-bar { display: flex; align-items: center; gap: 10px; }
+
+  .btn { border: none; border-radius: 4px; padding: 7px 14px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+  .btn-primary { background: var(--green-light); color: var(--green-dark); }
+  .btn-primary:hover { background: #40a075; }
+  .btn-accent { background: var(--accent); color: var(--white); }
+  .btn-outline { background: transparent; border: 1.5px solid var(--green-light); color: var(--green-light); }
+  .btn-outline:hover { background: rgba(82,183,136,.15); }
+  .btn-sm { padding: 4px 10px; font-size: 11px; }
+
+  /* ── YEAR BAR ── */
+  .year-bar {
+    background: var(--white); border-bottom: 1px solid var(--gray1);
+    padding: 10px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .year-bar label { font-size: 11px; font-weight: 600; color: var(--gray3); text-transform: uppercase; letter-spacing: 1px; }
+  .year-pill { background: var(--green-pale); color: var(--green-dark); border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; border: 1.5px solid var(--green-light); }
+  .new-pill  { background: #fff3e0; color: #c0350a; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 700; border: 1.5px dashed var(--accent); }
+  .year-bar input[type=number] { border: 1.5px solid var(--gray2); border-radius: 4px; padding: 5px 10px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: var(--green-dark); width: 90px; }
+  .year-bar input:focus { outline: none; border-color: var(--green-light); }
+  .legend { display: flex; gap: 12px; align-items: center; margin-left: auto; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gray3); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* ── TABS ── */
+  .tab-bar { display: flex; padding: 12px 16px 0; gap: 4px; border-bottom: 2px solid var(--green-light); background: var(--bg); }
+  .tab-btn { padding: 7px 16px; background: var(--gray1); border: none; border-radius: 5px 5px 0 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--gray3); cursor: pointer; transition: all .15s; }
+  .tab-btn.active { background: var(--green-dark); color: var(--white); }
+  .tab-btn:hover:not(.active) { background: var(--green-pale); color: var(--green-dark); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── SECTION ── */
+  .section {
+    margin: 18px 16px;
+    background: var(--white); border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.08); overflow: hidden;
+  }
+  .section-head {
+    background: var(--green-dark); color: var(--white);
+    padding: 9px 18px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-head .badge { background: var(--green-light); color: var(--green-dark); border-radius: 3px; padding: 2px 7px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+  .section-head h2 { font-size: 13px; font-weight: 700; flex: 1; }
+  .section-note { font-size: 10px; color: rgba(255,255,255,.6); }
+
+  /* ── SUMMARY TABLE ── */
+  .summary-section { margin: 18px 16px; }
+
+  .sum-table-wrap { overflow-x: auto; }
+  .sum-table {
+    width: 100%; border-collapse: collapse; border-radius: 8px; overflow: hidden;
+  }
+  .sum-table thead tr { background: var(--green-dark); color: white; }
+  .sum-table thead th { padding: 9px 12px; font-size: 11px; font-weight: 600; text-align: left; border-right: 1px solid rgba(255,255,255,.15); text-transform: uppercase; letter-spacing: .3px; }
+  .sum-table thead th.num { text-align: right; }
+  .sum-table tbody tr { border-bottom: 1px solid var(--gray1); }
+  .sum-table tbody tr:hover { background: #f0f7f2; }
+  .sum-table tbody tr.section-row { background: var(--green-pale); font-weight: 700; color: var(--green-dark); }
+  .sum-table tbody tr.section-row td { border-top: 2px solid var(--green-light); padding: 7px 12px; }
+  .sum-table tbody tr.grand-row { background: var(--green-dark); color: white; font-weight: 700; }
+  .sum-table tbody tr.grand-row td { padding: 9px 12px; font-size: 13px; font-family: 'IBM Plex Mono', monospace; }
+  .sum-table td { padding: 6px 12px; }
+  .sum-table td.num { text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  .sum-table td.roman { font-weight: 700; color: var(--green-mid); min-width: 30px; }
+  .sum-table td.rbr { color: var(--gray2); font-size: 11px; min-width: 28px; }
+  .sum-table td.bold { font-weight: 700; }
+  .sum-table td.new-cell { text-align: right; }
+  .sum-table td.check-td { text-align: center; width: 34px; }
+  input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--green-mid); cursor: pointer; }
+
+  .new-input {
+    width: 90px; border: 1.5px solid #e76f51; border-radius: 3px;
+    padding: 3px 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    background: #fff8f5; color: #8b2000; text-align: right;
+  }
+  .new-input:focus { outline: none; border-color: #c0350a; background: #fff; }
+  .new-input.ha { background: #fff8f5; }
+
+  /* Done row */
+  tr.done-row td { background: #eafaf1 !important; color: #27ae60; }
+
+  /* ── DETAIL TABLE ── */
+  .detail-table { width: 100%; border-collapse: collapse; }
+  .detail-table thead tr { background: var(--green-mid); color: white; }
+  .detail-table thead th { padding: 6px 10px; font-size: 10px; font-weight: 600; text-align: left; border-right: 1px solid rgba(255,255,255,.2); text-transform: uppercase; }
+  .detail-table thead th.r { text-align: right; }
+  .detail-table tbody tr { border-bottom: 1px solid var(--gray1); }
+  .detail-table tbody tr:hover { background: #f4faf6; }
+  .detail-table td { padding: 5px 10px; font-size: 11px; border-right: 1px solid var(--gray1); }
+  .detail-table td.r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+  .detail-table td.check-td { text-align: center; width: 34px; }
+  .detail-table tfoot tr { background: var(--green-pale); font-weight: 700; }
+  .detail-table tfoot td { padding: 6px 10px; font-size: 11px; font-weight: 700; color: var(--green-dark); border-top: 2px solid var(--green-light); }
+  .detail-table tfoot td.r { text-align: right; font-family: 'IBM Plex Mono', monospace; }
+
+  /* ── GRID STATS ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 10px; padding: 14px 16px; }
+  .stat-box { background: var(--white); border-radius: 6px; border: 1px solid var(--gray1); padding: 10px 14px; border-left: 4px solid var(--green-light); }
+  .stat-box.accent { border-left-color: var(--accent); }
+  .stat-box.blue { border-left-color: var(--accent2); }
+  .stat-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--gray3); }
+  .stat-val { font-size: 20px; font-weight: 700; font-family: 'IBM Plex Mono', monospace; color: var(--green-dark); line-height: 1.1; margin-top: 2px; }
+  .stat-unit { font-size: 11px; color: var(--gray3); }
+  .stat-sub { font-size: 10px; color: var(--gray2); margin-top: 2px; }
+
+  /* progress */
+  .prog-wrap { padding: 8px 18px 14px; }
+  .prog-label { font-size: 10px; color: var(--gray3); font-weight: 600; text-transform: uppercase; margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .prog-bg { background: var(--gray1); border-radius: 99px; height: 7px; overflow: hidden; }
+  .prog-bar { background: var(--green-light); height: 100%; border-radius: 99px; transition: width .3s; }
+
+  /* cat badges */
+  .cat-i   { background: #1a3a2a; }
+  .cat-ii  { background: #2d6a4f; }
+  .cat-iii { background: #40916c; }
+  .cat-iv  { background: #74c69d; }
+  .cat-badge { display: inline-block; color: white; border-radius: 3px; padding: 2px 7px; font-size: 10px; font-weight: 700; min-width: 28px; text-align: center; margin-right: 6px; }
+
+  /* ═══════════════════════════════════════════
+     PRO PRINT STYLES – A4 Portrait
+  ═══════════════════════════════════════════ */
+  @media print {
+    @page { size: A4 portrait; margin: 14mm 12mm 16mm 12mm; }
+
+    /* ── Hide interactive UI ── */
+    .no-print, .controls-bar, .tab-bar, .year-bar,
+    .prog-wrap, .legend, button, .btn,
+    .year-pill, .new-pill, input[type=number],
+    .new-input, input[type=checkbox],
+    td.check-td, th:first-child { display: none !important; }
+
+    /* ── Show all tabs ── */
+    .tab-panel { display: block !important; }
+
+    body {
+      background: white !important;
+      font-family: 'Times New Roman', Times, serif !important;
+      font-size: 8.5pt !important;
+      color: #000 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      position: static !important;
+      background: white !important;
+      color: #000 !important;
+      border: none !important;
+      border-bottom: 2pt solid #000 !important;
+      padding: 0 0 3mm !important;
+      margin-bottom: 4mm;
+      min-height: unset !important;
+      flex-wrap: wrap;
+    }
+    .page-header .org { font-size: 7pt !important; color: #000 !important; }
+    .page-header h1 { font-size: 12pt !important; color: #000 !important; font-family: 'Times New Roman', serif !important; }
+    .page-header .sub { font-size: 7pt !important; color: #444 !important; }
+
+    /* ── Stat grid ── */
+    .stat-grid {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 4px !important;
+      padding: 3mm 0 !important;
+      margin: 0 !important;
+    }
+    #prog-stat { display: none !important; }
+    .stat-box {
+      border: 0.5pt solid #aaa !important;
+      border-left: 2pt solid #000 !important;
+      padding: 3px 6px !important;
+      border-radius: 0 !important;
+      background: white !important;
+      box-shadow: none !important;
+    }
+    .stat-box.accent { border-left-color: #555 !important; }
+    .stat-box.blue { border-left-color: #333 !important; }
+    .stat-label { font-size: 6pt !important; color: #000 !important; }
+    .stat-val { font-size: 11pt !important; font-weight: bold !important; color: #000 !important; }
+    .stat-sub { font-size: 6pt !important; color: #444 !important; }
+    .stat-unit { font-size: 8pt !important; }
+
+    /* ── Sections ── */
+    .section { margin: 3mm 0 !important; box-shadow: none !important; border: 0.5pt solid #888 !important; border-radius: 0 !important; break-inside: avoid; }
+    .section-head { background: #111 !important; color: white !important; padding: 3px 8px !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-head .badge { background: #555 !important; font-size: 7pt !important; }
+    .section-head h2 { font-size: 9pt !important; font-family: 'Times New Roman', serif !important; }
+    .section-note { font-size: 7pt !important; color: #ccc !important; }
+
+    /* ── Tables ── */
+    .sum-table-wrap, .tbl-wrap { overflow: visible !important; }
+
+    .sum-table, .detail-table {
+      width: 100% !important;
+      border-collapse: collapse !important;
+      font-size: 7.5pt !important;
+    }
+    .sum-table thead tr, .detail-table thead tr {
+      background: #222 !important;
+      color: white !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .sum-table thead th, .detail-table thead th {
+      padding: 3px 5px !important;
+      font-size: 6.5pt !important;
+      border: 0.5pt solid #666 !important;
+      font-family: 'Times New Roman', serif !important;
+    }
+    .sum-table thead th.num, .detail-table thead th.r { text-align: right; }
+
+    .sum-table td, .detail-table td {
+      padding: 2.5px 5px !important;
+      font-size: 7.5pt !important;
+      border: 0.3pt solid #ccc !important;
+      font-family: 'Times New Roman', serif !important;
+    }
+    .sum-table tr:hover, .detail-table tr:hover { background: transparent !important; }
+
+    .sum-table tr.section-row {
+      background: #e4e4e4 !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .sum-table tr.section-row td { border-top: 1pt solid #000 !important; }
+    .sum-table tr.grand-row {
+      background: #111 !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .sum-table tr.grand-row td { color: white !important; }
+
+    .detail-table tfoot tr { background: #e4e4e4 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .detail-table tfoot td { border-top: 1pt solid #000 !important; font-weight: bold !important; }
+
+    /* ── Category badges (keep in print) ── */
+    .cat-badge { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cat-i, .cat-ii, .cat-iii, .cat-iv { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    /* ── Section labels before each tab ── */
+    #tab-zbir::before {
+      content: "10.3  PLAN ŠUMSKO-UZGOJNIH RADOVA – POGON GOSPODARENJA BOSANSKA KRUPA – ZBIRNA TABELA";
+      display: block; font-size: 10pt; font-weight: bold;
+      font-family: 'Times New Roman', serif;
+      border-bottom: 1pt solid #000; padding-bottom: 2mm; margin-bottom: 3mm;
+      text-transform: uppercase;
+    }
+    #tab-priprema::before { content: "I – PRIPREMA TERENA ZA POŠUMLJAVANJE"; display: block; font-size: 9pt; font-weight: bold; font-family: 'Times New Roman', serif; padding: 2mm 0 1mm; border-bottom: 0.5pt solid #000; margin-bottom: 3mm; }
+    #tab-posumljavanje::before { content: "II – POŠUMLJAVANJE"; display: block; font-size: 9pt; font-weight: bold; font-family: 'Times New Roman', serif; padding: 2mm 0 1mm; border-bottom: 0.5pt solid #000; margin-bottom: 3mm; }
+    #tab-njege::before { content: "III – NJEGE ŠUMA"; display: block; font-size: 9pt; font-weight: bold; font-family: 'Times New Roman', serif; padding: 2mm 0 1mm; border-bottom: 0.5pt solid #000; margin-bottom: 3mm; }
+
+    #tab-priprema, #tab-posumljavanje, #tab-njege { page-break-before: always; }
+
+    /* ── Grand total footer ── */
+    div[style*="background:var(--green-dark)"] {
+      background: #111 !important;
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+      margin: 3mm 0 !important; padding: 5px 8px !important; border-radius: 0 !important;
+    }
+
+    /* ── Running footer ── */
+    body::after {
+      content: "ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa  ·  Plan šumsko-uzgojnih radova – Pogon Gospodarenja Bosanska Krupa  ·  Revidirani plan za 2026. godinu";
+      display: block; font-size: 6pt; color: #555;
+      border-top: 0.5pt solid #aaa; padding-top: 2mm; margin-top: 4mm;
+      text-align: center; font-family: 'Times New Roman', serif;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="title-block">
+    <div class="org">ŠPD „Unsko-sanske šume" d.o.o. Bosanska Krupa</div>
+    <h1>Plan Šumsko-uzgojnih Radova – Pogon Gospodarenja Bosanska Krupa</h1>
+    <div class="sub">Revidirani plan rada i poslovanja • Sekcija 10.3 • Godina 2026</div>
+  </div>
+  <div class="controls-bar no-print">
+    <button class="btn btn-outline btn-sm" onclick="checkAll(true)">✓ Čekiraj sve</button>
+    <button class="btn btn-outline btn-sm" onclick="checkAll(false)">✗ Odčekiraj</button>
+    <button class="btn btn-accent" onclick="window.print()">🖨 Štampaj</button>
+  </div>
+</div>
+
+<!-- YEAR BAR -->
+<div class="year-bar no-print">
+  <label>Referentna godina:</label>
+  <span class="year-pill">📋 2026</span>
+  <label>Nova godina:</label>
+  <input type="number" id="newYear" value="2027" min="2024" max="2040" onchange="updateYearLabel()">
+  <span class="new-pill" id="newYearPill">✎ 2027</span>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#52b788;"></div> Plan 2026 (10-god. / godišnji ŠGO)</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e76f51;"></div> Unos <span id="legendYear">2027</span></div>
+    <div class="legend-item"><input type="checkbox" checked disabled> Izvršeno</div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stat-grid" style="padding-top:16px;">
+  <div class="stat-box">
+    <div class="stat-label">Plan za 10 godina</div>
+    <div class="stat-val">7.614<span class="stat-unit"> ha</span></div>
+    <div class="stat-sub">Sveukupno svi radovi</div>
+  </div>
+  <div class="stat-box">
+    <div class="stat-label">Godišnji plan po ŠGO</div>
+    <div class="stat-val">761,4<span class="stat-unit"> ha</span></div>
+    <div class="stat-sub">Prosjek po godini</div>
+  </div>
+  <div class="stat-box accent">
+    <div class="stat-label">Plan 2026 – SVEUKUPNO</div>
+    <div class="stat-val">485,5<span class="stat-unit"> ha</span></div>
+    <div class="stat-sub">Priprema + Pošuml. + Njege</div>
+  </div>
+  <div class="stat-box blue">
+    <div class="stat-label">Njege ukupno 2026</div>
+    <div class="stat-val">453,5<span class="stat-unit"> ha</span></div>
+    <div class="stat-sub">Kulture + Izdanačke + Podmladak</div>
+  </div>
+  <div class="stat-box" id="prog-stat">
+    <div class="stat-label">Napredak izvršenja</div>
+    <div class="stat-val" id="prog-pct">0%</div>
+    <div class="stat-sub" id="prog-sub">0 / 0 izvršeno</div>
+  </div>
+</div>
+<div class="prog-wrap no-print">
+  <div class="prog-label"><span>Izvršenje po stavkama</span><span id="prog-lbl">0%</span></div>
+  <div class="prog-bg"><div class="prog-bar" id="prog-bar" style="width:0%"></div></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar no-print">
+  <button class="tab-btn active" onclick="switchTab('zbir','this')">📊 Zbirna Tabela</button>
+  <button class="tab-btn" onclick="switchTab('priprema','this')">I – Priprema Terena</button>
+  <button class="tab-btn" onclick="switchTab('posumljavanje','this')">II – Pošumljavanje</button>
+  <button class="tab-btn" onclick="switchTab('njege','this')">III – Njege</button>
+</div>
+
+<!-- ================================================================
+     TAB 1 – ZBIRNA TABELA
+================================================================ -->
+<div id="tab-zbir" class="tab-panel active">
+<div class="section">
+  <div class="section-head">
+    <span class="badge">10.3</span>
+    <h2>Zbirna tabela – Plan šumsko-uzgojnih radova za Pogon Gospod. B. Krupa</h2>
+    <span class="section-note">Podaci iz Revidiranog plana za 2026. god.</span>
+  </div>
+  <div class="sum-table-wrap">
+  <table class="sum-table">
+    <thead>
+      <tr>
+        <th style="width:34px">✓</th>
+        <th style="width:30px">Kat.</th>
+        <th style="width:32px">R.br.</th>
+        <th>VRSTA RADOVA</th>
+        <th class="num" style="width:90px">Plan 10 god. (ha)</th>
+        <th class="num" style="width:90px">Godiš. plan ŠGO (ha)</th>
+        <th class="num" style="width:90px">Plan 2026 (ha)</th>
+        <th class="num" style="width:110px">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+        <th style="width:120px">Primjedba</th>
+      </tr>
+    </thead>
+    <tbody>
+<!-- I – Priprema terena -->
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">1</td><td>Priprema terena za pošumljavanje</td><td class="num">510,88</td><td class="num">51,09</td><td class="num">2,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">2</td><td>Priprema terena za prirodnu obnovu</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr class="section-row">
+  <td class="check-td"></td><td class="roman"><span class="cat-badge cat-i">I</span></td><td class="rbr"></td>
+  <td class="bold">UKUPNO PRIPREMA TERENA (Σ 1 do 2)</td>
+  <td class="num bold">510,88</td><td class="num bold">51,09</td><td class="num bold">2,00</td>
+  <td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td>
+</tr>
+<!-- II – Pošumljavanje -->
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">3</td><td>Pošumljavanje unutar visokih šuma</td><td class="num">434,76</td><td class="num">43,48</td><td class="num">21,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">4</td><td>Pošumljavanje unutar izdanačkih šuma</td><td class="num">51,62</td><td class="num">5,16</td><td class="num">4,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">5</td><td>Pošumljavanje goleti i šibljaka</td><td class="num">24,50</td><td class="num">2,45</td><td class="num">5,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">6</td><td>Popunjavanje kultura po kolaudaciji</td><td class="num">98,12</td><td class="num">9,81</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">7</td><td>Popunjavanje prirodnog podmlatka</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr class="section-row">
+  <td class="check-td"></td><td class="roman"><span class="cat-badge cat-ii">II</span></td><td class="rbr"></td>
+  <td class="bold">UKUPNO POŠUMLJAVANJE (Σ 3 do 7)</td>
+  <td class="num bold">609,00</td><td class="num bold">60,90</td><td class="num bold">30,00</td>
+  <td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td>
+</tr>
+<!-- III – Njege -->
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">8</td><td>Njege kultura (prorede) – kresanje</td><td class="num">645,20</td><td class="num">64,52</td><td class="num">63,70</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">9</td><td>Njega šumskih kultura ispod taks. praga</td><td class="num">160,30</td><td class="num">16,03</td><td class="num">30,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">10</td><td>Njege izdanačkih šuma (prorede) – melioracije</td><td class="num">4.544,80</td><td class="num">454,48</td><td class="num">354,80</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">11</td><td>Njega lišćarskih mladika izdanačkih šuma</td><td class="num">103,30</td><td class="num">10,33</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">12</td><td>Njega mladika iz šuma pitomog kestena</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">13</td><td>Njega prirodnog podmlatka</td><td class="num">1.040,71</td><td class="num">104,07</td><td class="num">5,00</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">14</td><td>Njega okalemljenih kultura</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr class="section-row">
+  <td class="check-td"></td><td class="roman"><span class="cat-badge cat-iii">III</span></td><td class="rbr"></td>
+  <td class="bold">UKUPNO NJEGE (Σ 8 do 14)</td>
+  <td class="num bold">6.494,31</td><td class="num bold">649,43</td><td class="num bold">453,50</td>
+  <td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td>
+</tr>
+<!-- IV – Ostale njege -->
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">15</td><td>Kalemljenje maruna</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">16</td><td>Priprema površine za kalemljenje</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td class="roman"></td><td class="rbr">17</td><td>Podsijavanje jele</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td></tr>
+<tr class="section-row">
+  <td class="check-td"></td><td class="roman"><span class="cat-badge cat-iv">IV</span></td><td class="rbr"></td>
+  <td class="bold">UKUPNO OSTALE NJEGE (Σ 15 do 17)</td>
+  <td class="num bold">0,00</td><td class="num bold">0,00</td><td class="num bold">0,00</td>
+  <td class="new-cell"><input type="number" class="new-input ha" placeholder="—" step="0.01"></td><td></td>
+</tr>
+<!-- V – Sveukupno -->
+<tr class="grand-row">
+  <td class="check-td"></td><td colspan="3" style="font-size:12px;font-weight:700;padding-left:12px;">V &nbsp; SVEUKUPNO (I + II + III + IV)</td>
+  <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">7.614,19</td>
+  <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">761,42</td>
+  <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">485,50</td>
+  <td style="text-align:right;padding-right:8px;"><input type="number" class="new-input ha" placeholder="—" step="0.01" style="background:#fff3e0;border-color:#e76f51;font-weight:700;"></td>
+  <td></td>
+</tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</div><!-- end tab-zbir -->
+
+<!-- ================================================================
+     TAB 2 – PRIPREMA TERENA
+================================================================ -->
+<div id="tab-priprema" class="tab-panel">
+
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#f4a261;">I</span>
+    <h2>Priprema terena za pošumljavanje</h2>
+    <span class="section-note">Ukupno: 2,00 ha</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Gazd. klasa</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+      <th>Primjedba</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>85</td><td>2</td><td>6103</td><td class="r">2,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="4" class="bold">UKUPNO</td><td class="r bold">2,00</td><td></td><td></td></tr></tfoot>
+  </table>
+</div>
+
+</div><!-- end tab-priprema -->
+
+<!-- ================================================================
+     TAB 3 – POŠUMLJAVANJE
+================================================================ -->
+<div id="tab-posumljavanje" class="tab-panel">
+
+<!-- Pošumljavanje unutar visokih šuma -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#2d6a4f;">II-3</span>
+    <h2>Pošumljavanje unutar visokih šuma</h2>
+    <span class="section-note">21,00 ha | 37.800 sadnica</span>
+  </div>
+  <div class="sum-table-wrap">
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Vrsta sadnica</th>
+      <th class="r">Gustoća</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Kol. (kom.)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>36</td><td>1</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>36</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>104</td><td>1</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>104</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>105</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>36</td><td>4</td><td>Kesten</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>64</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>65</td><td>3</td><td>Smrča</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>2</td><td>Javor</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>85</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>85</td><td>5</td><td>Javor</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>85</td><td>2</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Javor</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>Bukva</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="5" class="bold">UKUPNO</td><td class="r bold">21,00</td><td class="r bold">37.800</td><td></td></tr></tfoot>
+  </table>
+  </div>
+</div>
+
+<!-- Pošumljavanje unutar izdanačkih šuma -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#2d6a4f;">II-4</span>
+    <h2>Pošumljavanje unutar izdanačkih šuma</h2>
+    <span class="section-note">4,00 ha | 7.200 sadnica</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Vrsta sadnica</th>
+      <th class="r">Gustoća</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Kol. (kom.)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>3</td><td>4</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">2,00</td><td class="r">3.600</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>27</td><td>1</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">1,50</td><td class="r">2.700</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>27</td><td>1</td><td>Kesten</td><td class="r">1.800</td><td class="r">0,50</td><td class="r">900</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="5" class="bold">UKUPNO</td><td class="r bold">4,00</td><td class="r bold">7.200</td><td></td></tr></tfoot>
+  </table>
+</div>
+
+<!-- Pošumljavanje goleti i šibljaka -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#2d6a4f;">II-5</span>
+    <h2>Pošumljavanje goleti i šibljaka</h2>
+    <span class="section-note">5,00 ha | 9.000 sadnica</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Vrsta sadnica</th>
+      <th class="r">Gustoća</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Kol. (kom.)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>Hrast kit.</td><td class="r">1.800</td><td class="r">4,00</td><td class="r">7.200</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>Kesten</td><td class="r">1.800</td><td class="r">1,00</td><td class="r">1.800</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="5" class="bold">UKUPNO</td><td class="r bold">5,00</td><td class="r bold">9.000</td><td></td></tr></tfoot>
+  </table>
+</div>
+
+</div><!-- end tab-posumljavanje -->
+
+<!-- ================================================================
+     TAB 4 – NJEGE
+================================================================ -->
+<div id="tab-njege" class="tab-panel">
+
+<!-- Njega kultura – kresanje -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#40916c;">III-8</span>
+    <h2>Njega kultura (prorede) – kresanje</h2>
+    <span class="section-note">Ukupno: 63,70 ha</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Gazd. klasa</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+      <th>Primjedba</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>13</td><td>2</td><td>3201</td><td class="r">18,80</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>13</td><td>3</td><td>3201</td><td class="r">1,30</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>35</td><td>3</td><td>3202</td><td class="r">7,90</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>2</td><td>3202</td><td class="r">5,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>3202</td><td class="r">1,70</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>4</td><td>3202</td><td class="r">0,40</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>5</td><td>3208</td><td class="r">9,30</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>64/2p</td><td>2</td><td>3201</td><td class="r">9,20</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>64/2p</td><td>3</td><td>3201</td><td class="r">0,50</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>85p</td><td>1</td><td>3208</td><td class="r">9,60</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="4" class="bold">UKUPNO</td><td class="r bold">63,70</td><td></td><td></td></tr></tfoot>
+  </table>
+</div>
+
+<!-- Njega šumskih kultura ispod taks. praga -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#40916c;">III-9</span>
+    <h2>Njega šumskih kultura ispod taksacionog praga</h2>
+    <span class="section-note">Ukupno: 30,00 ha</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Gazd. klasa</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+      <th>Primjedba</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>58</td><td>2</td><td>3201</td><td class="r">0,20</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>65</td><td>3</td><td>3202</td><td class="r">1,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>2</td><td>3202</td><td class="r">1,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>113</td><td>5</td><td>3101</td><td class="r">1,60</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>20</td><td>6</td><td>4104</td><td class="r">1,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>108</td><td>5</td><td>6404</td><td class="r">4,50</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>1</td><td>4</td><td>6404</td><td class="r">16,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>26</td><td>4</td><td>6101</td><td class="r">3,90</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>29</td><td>3</td><td>6401</td><td class="r">0,80</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="4" class="bold">UKUPNO</td><td class="r bold">30,00</td><td></td><td></td></tr></tfoot>
+  </table>
+</div>
+
+<!-- Njega izdanačkih šuma – melioracije -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#40916c;">III-10</span>
+    <h2>Njega izdanačkih šuma (prorede) – Melioracije</h2>
+    <span class="section-note">Ukupno: 354,80 ha</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Gazd. klasa</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+      <th>Primjedba</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>4</td><td>2</td><td>4119</td><td class="r">50,50</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>66</td><td>2</td><td>4115</td><td class="r">68,20</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>85p</td><td>2</td><td>4107</td><td class="r">80,40</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Grmeč-Jasenica</td><td>88p</td><td>8</td><td>4107</td><td class="r">50,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>66</td><td>3</td><td>4412</td><td class="r">26,40</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Risovac-Krupa</td><td>113p</td><td>1</td><td>4115</td><td class="r">5,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>15</td><td>1</td><td>4111</td><td class="r">32,70</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Vojskova</td><td>25</td><td>1</td><td>4112</td><td class="r">41,60</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="4" class="bold">UKUPNO</td><td class="r bold">354,80</td><td></td><td></td></tr></tfoot>
+  </table>
+</div>
+
+<!-- Njega prirodnog podmlatka -->
+<div class="section">
+  <div class="section-head">
+    <span class="badge" style="background:#40916c;">III-13</span>
+    <h2>Njega prirodnog podmlatka</h2>
+    <span class="section-note">Ukupno: 5,00 ha</span>
+  </div>
+  <table class="detail-table">
+    <thead><tr>
+      <th style="width:34px">✓</th>
+      <th>Gospodarska jedinica</th>
+      <th>Odjel</th>
+      <th>Odsjek</th>
+      <th>Gazd. klasa</th>
+      <th class="r">Površina (ha)</th>
+      <th class="r">Unos <span class="new-year-lbl">2027</span> (ha)</th>
+      <th>Primjedba</th>
+    </tr></thead>
+    <tbody>
+<tr><td class="check-td"><input type="checkbox" onchange="updateProgress()"></td><td>Baštra-Ćorkovača</td><td>13</td><td>3</td><td>4413</td><td class="r">5,00</td><td class="r"><input type="number" class="new-input" placeholder="—" step="0.01"></td><td></td></tr>
+    </tbody>
+    <tfoot><tr><td></td><td colspan="4" class="bold">UKUPNO</td><td class="r bold">5,00</td><td></td><td></td></tr></tfoot>
+  </table>
+</div>
+
+</div><!-- end tab-njege -->
+
+<!-- FOOTER -->
+<div style="padding:20px 16px 30px;">
+  <div style="background:var(--green-dark);color:white;border-radius:8px;padding:14px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;border:2px solid var(--green-light);">
+    <div><div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#52b788;">SVEUKUPNO 2026</div><div style="font-size:20px;font-weight:700;font-family:'IBM Plex Mono',monospace;">485,50 ha</div></div>
+    <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Priprema terena</div><div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;">2,00 ha</div></div>
+    <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Pošumljavanje</div><div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;">30,00 ha</div></div>
+    <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Njege ukupno</div><div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;">453,50 ha</div></div>
+    <div><div style="font-size:9px;color:#f4a261;text-transform:uppercase;">Melioracije</div><div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;">354,80 ha</div></div>
+    <div><div style="font-size:9px;color:#52b788;text-transform:uppercase;">Njega kultura</div><div style="font-size:18px;font-weight:700;font-family:'IBM Plex Mono',monospace;">63,70 ha</div></div>
+  </div>
+</div>
+
+<script>
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function updateYearLabel() {
+  const y = document.getElementById('newYear').value;
+  document.getElementById('newYearPill').textContent = '✎ ' + y;
+  document.getElementById('legendYear').textContent = y;
+  document.querySelectorAll('.new-year-lbl').forEach(el => el.textContent = y);
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('input[type=checkbox]');
+  const checked = document.querySelectorAll('input[type=checkbox]:checked');
+  const pct = all.length ? Math.round(checked.length / all.length * 100) : 0;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-sub').textContent = checked.length + ' / ' + all.length + ' izvršeno';
+  document.getElementById('prog-bar').style.width = pct + '%';
+  document.getElementById('prog-lbl').textContent = pct + '%';
+  // highlight rows
+  document.querySelectorAll('tr').forEach(row => {
+    const cb = row.querySelector('input[type=checkbox]');
+    if (cb) row.classList.toggle('done-row', cb.checked);
+  });
+}
+
+function checkAll(state) {
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = state);
+  updateProgress();
+}
+
+updateProgress();
+</script>
+</body>
+</html>
